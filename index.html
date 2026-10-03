@@ -38,7 +38,7 @@ footer{background:var(--nv);color:#fff;padding:1.5rem 1rem;text-align:center;mar
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ============ SETUP: paste your two Supabase values here (see setup steps) ============ */
-const CFG={url:"",key:""};
+const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnVhanhkdWd3bXdsYXJ0aHpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwNDM1MDMsImV4cCI6MjEwNjYxOTUwM30.SEcrcPqOYIBdA56SdZH5V1Z35m1OHOuU1_83FE8cgjU"};
 /* ====================================================================================== */
 const sb=CFG.url&&window.supabase?supabase.createClient(CFG.url,CFG.key):null;
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -46,7 +46,7 @@ const U=u=>/^(https?:\/\/|mailto:)/i.test(String(u||'').trim())?esc(String(u).tr
 const fD=d=>d?new Date(d).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'}):'',fDay=d=>d?new Date(d+'T12:00').toLocaleDateString(undefined,{dateStyle:'medium'}):'';
 const gc=(t,s,m)=>{const f=d=>new Date(d).toISOString().replace(/[-:]|\.\d+/g,'');return'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+f(s)+'/'+f(new Date(s).getTime()+m*6e4)};
 const gcd=(t,d)=>{const n=new Date(d+'T12:00');n.setDate(n.getDate()+1);return'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+d.replace(/-/g,'')+'/'+n.toISOString().slice(0,10).replace(/-/g,'')};
-let S={site:{mission:"The Elgin STEM Society empowers students to explore science, technology, engineering, and math through hands-on learning, collaboration, and community.",about:"We are a student-run club in Elgin, Illinois. No experience needed.",values:"Curiosity, Teamwork, Inclusivity",announce_on:!sb,announce:"Demo mode: connect Supabase (see setup steps) to turn on accounts and editing."},meeting:{url:"",when:"Wednesdays, 6:00 PM",next:"",loc:"Online",id:"",pass:""},contacts:[{name:"Shankar Noone",role:"Officer",email:"shankarnoone@gmail.com"},{name:"Krishiv Mahadik",role:"Officer",email:"krishivmahadik@gmail.com"}]};
+let S={site:{mission:"The Elgin STEM Society empowers students to explore science, technology, engineering, and math through hands-on learning, collaboration, and community.",about:"We are a student-run club in Elgin, Illinois. No experience needed.",values:"Curiosity, Teamwork, Inclusivity",announce_on:!sb,announce:"Demo mode: connect Supabase (see setup steps) to turn on accounts and editing."},meeting:{url:"",when:"Wednesdays, 6:00 PM",next:"",loc:"Online",id:"",pass:""},contacts:[{name:"Shankar Noone",role:"Co-founder",email:"shankarnoone@gmail.com"},{name:"Krishiv Mahadik",role:"Co-Founder",email:"Kmahadik@imsa.edu"}]};
 let T={sessions:[],lessons:[],signups:[],events:[],pend:[]},me=null,prof=null,R=new Set(),F={s:'',q:'',ls:''},L={up:false};
 const isO=()=>prof?.role=='officer',canHost=()=>['tutor','officer'].includes(prof?.role);
 const FD={sessions:[['title'],['subject'],['host_name'],['starts_at','dt'],['duration_min','num'],['description','area'],['link'],['recording']],lessons:[['title'],['subject'],['level'],['description','area'],['link'],['featured','chk']],signups:[['title'],['description','area'],['deadline','date'],['link'],['active','chk']],events:[['title'],['date','date'],['location']]};
