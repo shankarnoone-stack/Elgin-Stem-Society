@@ -62,7 +62,7 @@ async function load(){if(!sb)return;
 const mail=s=>'mailto:'+S.contacts.map(c=>esc(c.email)).join(',')+'?subject='+encodeURIComponent(s);
 function shell(){const N={sessions:'Sessions',lessons:'Lessons',signups:'Sign-Ups',events:'Events',contact:'Contact'};
  $('#ann').innerHTML=S.site.announce_on?`<div class="ann" role="status">${esc(S.site.announce)}</div>`:'';
- $('#nav').innerHTML='<b>🔬 <a href="#/" style="text-decoration:none;color:inherit">Elgin STEM</a></b>'+Object.keys(N).map(k=>`<a href="#/${k}">${N[k]}</a>`).join('')+(me?`<a href="#/profile">${esc(prof?.name||'Profile')}</a>${isO()?'<a href="#/admin">Admin</a>':''}<button class="btn s g" data-a="out">Log out</button>`:'<a class="btn s" href="#/login">Log in</a>')+'<button class="btn s g" data-a="theme" aria-label="Toggle dark mode">◐</button>';
+ $('#nav').innerHTML='<b><a href="#/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem"><img src="logo.png" alt="Elgin STEM Society logo" style="height:32px;width:auto">Elgin STEM</a></b>'+Object.keys(N).map(k=>`<a href="#/${k}">${N[k]}</a>`).join('')+(me?`<a href="#/profile">${esc(prof?.name||'Profile')}</a>${isO()?'<a href="#/admin">Admin</a>':''}<button class="btn s g" data-a="out">Log out</button>`:'<a class="btn s" href="#/login">Log in</a>')+'<button class="btn s g" data-a="theme" aria-label="Toggle dark mode">◐</button>';
  $('#foot').innerHTML=`<p><b>Elgin STEM Society</b> · Elgin, IL</p><p>${S.contacts.map(c=>`<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>`).join(' · ')}</p><p>© ${new Date().getFullYear()}</p>`}
 const scard=(x,p)=>`<div class="card ${p?'off':''}"><span class="tag">${esc(x.subject)}</span><span class="tag">${fD(x.starts_at)}</span><h3>${esc(x.title)}</h3><p class="mu">Led by ${esc(x.host_name)} · ${+x.duration_min||60} min</p><p>${esc(x.description)}</p>`+
  (p?(x.recording?`<a class="btn s" href="${U(x.recording)}" target="_blank" rel="noopener">Watch recording</a>`:''):
@@ -76,7 +76,7 @@ const collect=el=>{const o={};el.querySelectorAll('[data-k]').forEach(i=>{let v=
 const crud=tb=>`<h3 style="margin-top:1.5rem">${tb}</h3>`+T[tb].map(r=>`<fieldset data-f="${tb}" data-id="${r.id}">${FD[tb].map(f=>fld(f,r[f[0]])).join('')}<button class="btn s" data-a="save">Save</button> <button class="btn s g" data-a="del">Delete</button></fieldset>`).join('')+`<button class="btn s" data-a="add" data-t="${tb}">+ Add</button>`;
 const P={};
 P.home=()=>{const m=S.meeting,up=T.sessions.filter(x=>new Date(x.starts_at)>=Date.now()).sort((a,b)=>a.starts_at.localeCompare(b.starts_at)).slice(0,3);
- return`<header class="hero"><h1>Elgin STEM Society</h1><p>Free, student-led STEM sessions in Elgin, Illinois. Learn something new, or teach what you love.</p><a class="btn" href="#/sessions">Browse sessions</a>${m.url?`<a class="btn g" href="${U(m.url)}" target="_blank" rel="noopener">Join a meeting</a>`:''}${me?'':'<a class="btn g" href="#/login">Join us</a>'}</header>
+ return`<header class="hero"><h1 style="display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap"><img src="logo.png" alt="Elgin STEM Society logo" style="height:1.2em;width:auto">Elgin STEM Society</h1><p>Free, student-led STEM sessions in Elgin, Illinois. Learn something new, or teach what you love.</p><a class="btn" href="#/sessions">Browse sessions</a>${m.url?`<a class="btn g" href="${U(m.url)}" target="_blank" rel="noopener">Join a meeting</a>`:''}${me?'':'<a class="btn g" href="#/login">Join us</a>'}</header>
 <section><h2>Our Mission</h2><div class="card mis">${esc(S.site.mission)}</div><p>${esc(S.site.about)}</p>${String(S.site.values).split(',').map(v=>`<span class="tag f">${esc(v.trim())}</span>`).join('')}</section>
 <section><h2>Meetings</h2><div class="card mt"><h3>${esc(m.when)}</h3><p>${esc(m.loc)}</p><div class="cd" id="cd"></div><p>Meeting ID: <b>${esc(m.id)}</b> · Passcode: <b>${esc(m.pass)}</b></p><a class="btn" href="${U(m.url)}" target="_blank" rel="noopener">Join Now</a> <button class="btn g s" style="color:#fff" data-a="copy">Copy link</button></div></section>
 <section><h2>Upcoming sessions</h2>${up.length?`<div class="grid">${up.map(x=>scard(x,0)).join('')}</div>`:'<p class="mu">No upcoming sessions yet.</p>'}</section>
@@ -132,5 +132,7 @@ if(a=='eye'){const p=$('#lp'),h=p.type=='password';p.type=h?'text':'password';t.
 addEventListener('hashchange',route);
 (async()=>{await load();shell();route();setInterval(tick,1000)})();
 </script>
+</body>
+</html>
 </body>
 </html>
