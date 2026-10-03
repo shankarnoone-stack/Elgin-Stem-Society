@@ -8,6 +8,10 @@
 <meta property="og:title" content="Elgin STEM Society">
 <meta property="og:description" content="Free peer-led STEM sessions in Elgin, IL.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+img[src="logo.png"]{cursor:zoom-in}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:50;cursor:zoom-out;padding:1rem}
+#lb.on{display:flex}
+#lb img{max-width:min(90vw,700px);max-height:85vh;width:auto;height:auto;filter:none;background:#fff;border-radius:16px;padding:1rem}
 <style>
 :root{--bg:#f4f8f6;--card:#fff;--tx:#0a0f14;--mu:#4a5560;--nv:#1d4ed8;--tl:#1d4ed8;--or:#15803d;--bd:#d5e0da}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#050709;--card:#10151b;--tx:#f2f6f4;--mu:#a8b3bb;--nv:#60a5fa;--tl:#60a5fa;--or:#15803d;--bd:#232d37}}
@@ -35,7 +39,7 @@ footer{background:#05080b;border-top:4px solid #15803d;color:#fff;padding:1.5rem
 </style>
 </head>
 <body>
-<div id="ann"></div><nav id="nav" aria-label="Main"></nav><main id="main"></main><footer id="foot"></footer>
+<div id="ann"></div><nav id="nav" aria-label="Main"></nav><main id="main"></main><footer id="foot"></footer><div id="lb" role="dialog" aria-label="Logo"><img alt="Elgin STEM Society logo"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ============ SETUP: paste your two Supabase values here (see setup steps) ============ */
@@ -137,6 +141,8 @@ if(a=='post'){const o=collect($('#hf'));if(!o.title||!o.starts_at)return alert('
  if(a=='addc'){S.contacts=[...cs(),{name:'',role:'',email:''}];return route()}
  if(a=='rmc'){S.contacts=cs();S.contacts.splice(+t.dataset.i,1);return route()}
  if(a=='savec')return ok(await sb.from('settings').upsert({key:'contacts',value:cs()}))&&(alert('Saved!'),done())});
+document.addEventListener('click',e=>{const lb=$('#lb');if(e.target.closest('#lb'))return void lb.classList.remove('on');const im=e.target.closest('img[src="logo.png"]');if(im){e.preventDefault();lb.querySelector('img').src=im.src;lb.classList.add('on')}});
+addEventListener('keydown',e=>{if(e.key=='Escape')$('#lb').classList.remove('on')});
 addEventListener('hashchange',route);
 (async()=>{await load();shell();route();setInterval(tick,1000)})();
 </script>
