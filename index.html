@@ -3,15 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="logo.png">
 <title>Elgin STEM Society</title>
 <meta name="description" content="Elgin STEM Society: free student-led STEM sessions, lesson plans and community in Elgin, Illinois.">
 <meta property="og:title" content="Elgin STEM Society">
 <meta property="og:description" content="Free peer-led STEM sessions in Elgin, IL.">
+<meta property="og:image" content="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-img[src="logo.png"]{cursor:zoom-in}
-#lb{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:50;cursor:zoom-out;padding:1rem}
-#lb.on{display:flex}
-#lb img{max-width:min(90vw,700px);max-height:85vh;width:auto;height:auto;filter:none;background:#fff;border-radius:16px;padding:1rem}
 <style>
 :root{--bg:#f4f8f6;--card:#fff;--tx:#0a0f14;--mu:#4a5560;--nv:#1d4ed8;--tl:#1d4ed8;--or:#15803d;--bd:#d5e0da}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#050709;--card:#10151b;--tx:#f2f6f4;--mu:#a8b3bb;--nv:#60a5fa;--tl:#60a5fa;--or:#15803d;--bd:#232d37}}
@@ -22,7 +20,7 @@ section{max-width:1040px;margin:0 auto;padding:2rem 1rem}
 nav{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;gap:.25rem;align-items:center;padding:.4rem .75rem;overflow-x:auto}
 nav b{font-family:"Space Grotesk",system-ui,sans-serif;font-size:1.1rem;margin-right:auto;white-space:nowrap;color:var(--nv)}nav a:not(.btn){padding:.4rem .6rem;text-decoration:none;color:var(--tx);border-radius:8px;white-space:nowrap;font-size:.92rem}nav a:hover{background:var(--bd)}
 .btn{display:inline-block;border:0;border-radius:999px;padding:.7rem 1.3rem;font:inherit;font-weight:700;background:var(--or);color:#fff;cursor:pointer;text-decoration:none}
-.btn.g{background:transparent;border:2px solid currentColor;color:var(--tl)}.btn.s{padding:.35rem .8rem;font-size:.85rem}.hero .btn.g{color:#fff}
+.btn.g{background:transparent;border:2px solid currentColor;color:var(--tl)}.btn.s{padding:.35rem .8rem;font-size:.85rem}.hero .btn.g{color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed}
 :focus-visible{outline:3px solid var(--or);outline-offset:2px}
 .hero{background:linear-gradient(135deg,#05080b,#1d4ed8 60%,#15803d);color:#fff;text-align:center;padding:4rem 1rem}.hero h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:700}.hero p{max-width:620px;margin:0 auto 1.5rem;font-size:1.15rem}.hero .btn{margin:.25rem}
 .ann{background:var(--or);color:#fff;text-align:center;padding:.5rem 1rem;font-weight:600}
@@ -36,23 +34,30 @@ fieldset{border:1px solid var(--bd);border-radius:12px;margin:.6rem 0;padding:.6
 .fl{display:grid;gap:.5rem;grid-template-columns:2fr 1fr;margin-bottom:1rem}.stat{font-size:1.8rem;font-weight:800;color:var(--tl)}
 details{margin:.4rem 0}summary{cursor:pointer;color:var(--tl);font-weight:600}
 footer{background:#05080b;border-top:4px solid #15803d;color:#fff;padding:1.5rem 1rem;text-align:center;margin-top:2rem}footer a{color:#86efac}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) nav .logo{filter:invert(1)}}
+:root[data-theme=dark] nav .logo{filter:invert(1)}
+.hero .logo{filter:invert(1)}
+img[src="logo.png"]{cursor:zoom-in}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:50;cursor:zoom-out;padding:1rem}
+#lb.on{display:flex}
+#lb img{max-width:min(90vw,700px);max-height:85vh;width:auto;height:auto;filter:none;background:#fff;border-radius:16px;padding:1rem}
 </style>
 </head>
 <body>
 <div id="ann"></div><nav id="nav" aria-label="Main"></nav><main id="main"></main><footer id="foot"></footer><div id="lb" role="dialog" aria-label="Logo"><img alt="Elgin STEM Society logo"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-/* ============ SETUP: paste your two Supabase values here (see setup steps) ============ */
-const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnVhanhkdWd3bXdsYXJ0aHpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwNDM1MDMsImV4cCI6MjEwNjYxOTUwM30.SEcrcPqOYIBdA56SdZH5V1Z35m1OHOuU1_83FE8cgjU"};
-/* ====================================================================================== */
-const sb=CFG.url&&window.supabase?supabase.createClient(CFG.url,CFG.key):null;
+/* ============ SETUP: paste your two Supabase values here ============ */
+const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"PASTE-YOUR-ANON-KEY-HERE"};
+/* ==================================================================== */
+const sb=CFG.url&&!CFG.key.startsWith("PASTE")&&window.supabase?supabase.createClient(CFG.url,CFG.key):null;
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const U=u=>/^(https?:\/\/|mailto:)/i.test(String(u||'').trim())?esc(String(u).trim()):'#';
 const fD=d=>d?new Date(d).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'}):'',fDay=d=>d?new Date(d+'T12:00').toLocaleDateString(undefined,{dateStyle:'medium'}):'';
 const gc=(t,s,m)=>{const f=d=>new Date(d).toISOString().replace(/[-:]|\.\d+/g,'');return'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+f(s)+'/'+f(new Date(s).getTime()+m*6e4)};
 const gcd=(t,d)=>{const n=new Date(d+'T12:00');n.setDate(n.getDate()+1);return'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+d.replace(/-/g,'')+'/'+n.toISOString().slice(0,10).replace(/-/g,'')};
-let S={site:{mission:"The Elgin STEM Society empowers students to explore science, technology, engineering, and math through hands-on learning, collaboration, and community.",about:"We are a student-run club in Elgin, Illinois. No experience needed.",values:"Curiosity, Teamwork, Inclusivity",announce_on:!sb,announce:"Demo mode: connect Supabase (see setup steps) to turn on accounts and editing."},meeting:{url:"",when:"Wednesdays, 6:00 PM",next:"",loc:"Online",id:"",pass:""},contacts:[{name:"Shankar Noone",role:"Co-founder",email:"shankarnoone@gmail.com"},{name:"Krishiv Mahadik",role:"Co-Founder",email:"Kmahadik@imsa.edu"}]};
-let T={sessions:[],lessons:[],signups:[],events:[],pend:[],polls:[],votes:[]},me=null,prof=null,R=new Set(),F={s:'',q:'',ls:''},L={up:false};
+let S={site:{mission:"The Elgin STEM Society empowers students to explore science, technology, engineering, and math through hands-on learning, collaboration, and community.",about:"We are a student-run club in Elgin, Illinois. No experience needed.",values:"Curiosity, Teamwork, Inclusivity",announce_on:!sb,announce:"Demo mode: connect Supabase to turn on accounts and editing."},meeting:{url:"",when:"Wednesdays, 6:00 PM",next:"",loc:"Online",id:"",pass:""},contacts:[{name:"Shankar Noone",role:"Officer",email:"shankarnoone@gmail.com"},{name:"Krishiv Mahadik",role:"Officer",email:"krishivmahadik@gmail.com"}]};
+let T={sessions:[],lessons:[],signups:[],events:[],polls:[],votes:[],pend:[]},me=null,prof=null,R=new Set(),F={s:'',q:'',ls:''},L={up:false};
 const isO=()=>prof?.role=='officer',canHost=()=>['tutor','officer'].includes(prof?.role);
 const FD={sessions:[['title'],['subject'],['host_name'],['starts_at','dt'],['duration_min','num'],['description','area'],['link'],['recording']],lessons:[['title'],['subject'],['level'],['description','area'],['link'],['featured','chk']],signups:[['title'],['description','area'],['deadline','date'],['link'],['active','chk']],events:[['title'],['date','date'],['location']],polls:[['title'],['description','area'],['kind'],['closes_at','dt'],['active','chk']]};
 const FS={site:[['mission','area'],['about','area'],['values'],['announce_on','chk'],['announce']],meeting:[['url'],['when'],['next','dt'],['loc'],['id'],['pass']]},FC=[['name'],['role'],['email']];
@@ -63,13 +68,14 @@ const RES=[['Science Olympiad','https://www.soinc.org'],['FIRST Robotics','https
 const FAQ=[['What is Elgin STEM Society?','A student-run club exploring STEM through hands-on, peer-led sessions.'],['Who can join?','Any student interested in STEM.'],['Do I need experience?','No. Sessions start from the basics.']];
 async function load(){if(!sb)return;
  const q=t=>sb.from(t).select('*'),[st,a,b,c,d]=await Promise.all(['settings','sessions','lessons','signups','events'].map(q));
- (st.data||[]).forEach(r=>S[r.key]=r.value);T.sessions=a.data||[];T.lessons=b.data||[];T.signups=c.data||[];T.events=d.data||[];T.polls=(await sb.from('polls').select('*').order('created_at',{ascending:false})).data||[];
+ (st.data||[]).forEach(r=>S[r.key]=r.value);T.sessions=a.data||[];T.lessons=b.data||[];T.signups=c.data||[];T.events=d.data||[];
+ T.polls=(await sb.from('polls').select('*').order('created_at',{ascending:false})).data||[];
  const{data:{session}}=await sb.auth.getSession();me=session?.user||null;prof=null;R=new Set();
  if(me){prof=(await sb.from('profiles').select('*').eq('id',me.id).single()).data;R=new Set(((await sb.from('rsvps').select('session_id').eq('user_id',me.id)).data||[]).map(r=>r.session_id));T.votes=(await sb.from('poll_votes').select(isO()?'*,profiles(name)':'*')).data||[]}else T.votes=[]}
 const mail=s=>'mailto:'+S.contacts.map(c=>esc(c.email)).join(',')+'?subject='+encodeURIComponent(s);
 function shell(){const N={sessions:'Sessions',lessons:'Lessons',signups:'Sign-Ups',polls:'Polls',events:'Events',contact:'Contact'};
  $('#ann').innerHTML=S.site.announce_on?`<div class="ann" role="status">${esc(S.site.announce)}</div>`:'';
- $('#nav').innerHTML='<b><a href="#/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem"><img src="logo.png" alt="Elgin STEM Society logo" style="height:32px;width:auto">Elgin STEM</a></b>'+Object.keys(N).map(k=>`<a href="#/${k}">${N[k]}</a>`).join('')+(me?`<a href="#/profile">${esc(prof?.name||'Profile')}</a>${isO()?'<a href="#/admin">Admin</a>':''}<button class="btn s g" data-a="out">Log out</button>`:'<a class="btn s" href="#/login">Log in</a>')+'<button class="btn s g" data-a="theme" aria-label="Toggle dark mode">◐</button>';
+ $('#nav').innerHTML='<b><a href="#/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem"><img class="logo" src="logo.png" alt="Elgin STEM Society logo" style="height:32px;width:auto">Elgin STEM</a></b>'+Object.keys(N).map(k=>`<a href="#/${k}">${N[k]}</a>`).join('')+(me?`<a href="#/profile">${esc(prof?.name||'Profile')}</a>${isO()?'<a href="#/admin">Admin</a>':''}<button class="btn s g" data-a="out">Log out</button>`:'<a class="btn s" href="#/login">Log in</a>')+'<button class="btn s g" data-a="theme" aria-label="Toggle dark mode">◐</button>';
  $('#foot').innerHTML=`<p><b>Elgin STEM Society</b> · Elgin, IL</p><p>${S.contacts.map(c=>`<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>`).join(' · ')}</p><p>© ${new Date().getFullYear()}</p>`}
 const scard=(x,p)=>`<div class="card ${p?'off':''}"><span class="tag">${esc(x.subject)}</span><span class="tag">${fD(x.starts_at)}</span><h3>${esc(x.title)}</h3><p class="mu">Led by ${esc(x.host_name)} · ${+x.duration_min||60} min</p><p>${esc(x.description)}</p>`+
  (p?(x.recording?`<a class="btn s" href="${U(x.recording)}" target="_blank" rel="noopener">Watch recording</a>`:''):
@@ -81,12 +87,17 @@ const fld=([k,t],v)=>{const a=`data-k="${k}" data-t="${t||''}"`;if(t=='chk')retu
  return`<label>${lab(k)}<input type="${{date:'date',dt:'datetime-local',num:'number'}[t]||'text'}" value="${esc(v)}" ${a}></label>`};
 const collect=el=>{const o={};el.querySelectorAll('[data-k]').forEach(i=>{let v=i.type=='checkbox'?i.checked:i.value,t=i.dataset.t;if(t=='dt')v=v?new Date(v).toISOString():null;else if(t=='num')v=+v||0;else if(t=='date'&&!v)v=null;o[i.dataset.k]=v});return o};
 const crud=tb=>`<h3 style="margin-top:1.5rem">${TN[tb]}</h3>`+T[tb].map(r=>`<fieldset data-f="${tb}" data-id="${r.id}">${FD[tb].map(f=>fld(f,r[f[0]])).join('')}<button class="btn s" data-a="save">Save</button> <button class="btn s g" data-a="del">Delete</button></fieldset>`).join('')+`<button class="btn s" data-a="add" data-t="${tb}">+ Add</button>`;
+const isOpenPoll=p=>p.active&&(!p.closes_at||new Date(p.closes_at)>Date.now());
+const pollCard=p=>{const open=isOpenPoll(p),mine=T.votes.find(v=>v.poll_id==p.id&&v.user_id==me?.id)?.choice;
+ return`<div class="card ${open?'':'off'}"><span class="tag">${esc(p.kind)}</span><span class="tag ${open?'o':'c'}">${open?'Open':'Closed'}</span><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p>${p.closes_at?`<p class="mu">Closes ${fD(p.closes_at)}</p>`:''}`+
+ (!me?'<a class="btn s" href="#/login">Log in to answer</a>':[['yes',"Yes, I'll be there"],['maybe','Maybe'],['no',"Can't make it"]].map(([c,l])=>`<button class="btn s ${mine==c?'':'g'}" ${open?'':'disabled'} data-a="vote" data-id="${p.id}" data-c="${c}">${l}</button>`).join(' '))+'</div>'};
 const P={};
-P.home=()=>{const m=S.meeting,up=T.sessions.filter(x=>new Date(x.starts_at)>=Date.now()).sort((a,b)=>a.starts_at.localeCompare(b.starts_at)).slice(0,3);
- return`<header class="hero"><h1 style="display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap"><img src="logo.png" alt="Elgin STEM Society logo" style="height:1.2em;width:auto">Elgin STEM Society</h1><p>Free, student-led STEM sessions in Elgin, Illinois. Learn something new, or teach what you love.</p><a class="btn" href="#/sessions">Browse sessions</a>${m.url?`<a class="btn g" href="${U(m.url)}" target="_blank" rel="noopener">Join a meeting</a>`:''}${me?'':'<a class="btn g" href="#/login">Join us</a>'}</header>
+P.home=()=>{const m=S.meeting,up=T.sessions.filter(x=>new Date(x.starts_at)>=Date.now()).sort((a,b)=>a.starts_at.localeCompare(b.starts_at)).slice(0,3),op=T.polls.filter(isOpenPoll).slice(0,2);
+ return`<header class="hero"><h1 style="display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap"><img class="logo" src="logo.png" alt="Elgin STEM Society logo" style="height:1.2em;width:auto">Elgin STEM Society</h1><p>Free, student-led STEM sessions in Elgin, Illinois. Learn something new, or teach what you love.</p><a class="btn" href="#/sessions">Browse sessions</a>${m.url?`<a class="btn g" href="${U(m.url)}" target="_blank" rel="noopener">Join a meeting</a>`:''}${me?'':'<a class="btn g" href="#/login">Join us</a>'}</header>
 <section><h2>Our Mission</h2><div class="card mis">${esc(S.site.mission)}</div><p>${esc(S.site.about)}</p>${String(S.site.values).split(',').map(v=>`<span class="tag f">${esc(v.trim())}</span>`).join('')}</section>
 <section><h2>Meetings</h2><div class="card mt"><h3>${esc(m.when)}</h3><p>${esc(m.loc)}</p><div class="cd" id="cd"></div><p>Meeting ID: <b>${esc(m.id)}</b> · Passcode: <b>${esc(m.pass)}</b></p><a class="btn" href="${U(m.url)}" target="_blank" rel="noopener">Join Now</a> <button class="btn g s" style="color:#fff" data-a="copy">Copy link</button></div></section>
-${(()=>{const o=T.polls.filter(p=>p.active&&(!p.closes_at||new Date(p.closes_at)>Date.now())).slice(0,2);return o.length?`<section><h2>Are you coming?</h2><div class="grid">${o.map(pollCard).join('')}</div></section>`:''})()}<section><h2>Upcoming sessions</h2>${up.length?`<div class="grid">${up.map(x=>scard(x,0)).join('')}</div>`:'<p class="mu">No upcoming sessions yet.</p>'}</section>
+${op.length?`<section><h2>Are you coming?</h2><div class="grid">${op.map(pollCard).join('')}</div></section>`:''}
+<section><h2>Upcoming sessions</h2>${up.length?`<div class="grid">${up.map(x=>scard(x,0)).join('')}</div>`:'<p class="mu">No upcoming sessions yet.</p>'}</section>
 <section><h2>FAQ</h2>${FAQ.map(f=>`<details class="card"><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}</section>`};
 P.sessions=()=>{const L2=T.sessions.filter(x=>!F.s||x.subject==F.s),n=Date.now(),up=L2.filter(x=>new Date(x.starts_at)>=n).sort((a,b)=>a.starts_at.localeCompare(b.starts_at)),pa=L2.filter(x=>new Date(x.starts_at)<n).sort((a,b)=>b.starts_at.localeCompare(a.starts_at));
  const subs=[...new Set(T.sessions.map(x=>x.subject).filter(Boolean))];
@@ -96,9 +107,6 @@ P.sessions=()=>{const L2=T.sessions.filter(x=>!F.s||x.subject==F.s),n=Date.now()
 const lcard=x=>`<article class="card">${x.featured?'<span class="tag f">Featured</span>':''}<span class="tag">${esc(x.subject)}</span><span class="tag">${esc(x.level)}</span><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p>${x.link?`<a class="btn s" href="${U(x.link)}" target="_blank" rel="noopener">Open lesson</a>`:''}</article>`;
 function lessonList(){const q=F.q.toLowerCase();$('#ll').innerHTML=T.lessons.filter(x=>(!F.ls||x.subject==F.ls)&&(!q||JSON.stringify(x).toLowerCase().includes(q))).sort((a,b)=>!!b.featured-!!a.featured||String(b.created_at).localeCompare(String(a.created_at))).map(lcard).join('')||'<p class="mu">No lessons found.</p>'}
 P.lessons=()=>`<section><h2>Lesson Plans</h2><div class="fl"><input id="lq" placeholder="Search lessons" aria-label="Search lessons" value="${esc(F.q)}"><select id="ls" aria-label="Subject"><option value="">All</option>${[...new Set(T.lessons.map(x=>x.subject).filter(Boolean))].map(s=>`<option ${s==F.ls?'selected':''}>${esc(s)}</option>`).join('')}</select></div><div id="ll"></div><h3>Resources</h3><ul>${RES.map(r=>`<li><a href="${r[1]}" target="_blank" rel="noopener">${r[0]}</a></li>`).join('')}</ul></section>`;
-const pollCard=p=>{const open=p.active&&(!p.closes_at||new Date(p.closes_at)>Date.now()),mine=T.votes.find(v=>v.poll_id==p.id&&v.user_id==me?.id)?.choice;
- return`<div class="card ${open?'':'off'}"><span class="tag">${esc(p.kind)}</span><span class="tag ${open?'o':'c'}">${open?'Open':'Closed'}</span><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p>${p.closes_at?`<p class="mu">Closes ${fD(p.closes_at)}</p>`:''}`+
- (!me?'<a class="btn s" href="#/login">Log in to answer</a>':[['yes',"Yes, I'll be there"],['maybe','Maybe'],['no',"Can't make it"]].map(([c,l])=>`<button class="btn s ${mine==c?'':'g'}" ${open?'':'disabled'} data-a="vote" data-id="${p.id}" data-c="${c}">${l}</button>`).join(' '))+'</div>'};
 P.polls=()=>`<section><h2>Attendance Polls</h2><div class="grid">${T.polls.map(pollCard).join('')||'<p class="mu">No polls right now.</p>'}</div></section>`;
 P.signups=()=>`<section><h2>Sign-Ups</h2><div class="grid">${T.signups.map(s=>{const o=s.active&&(!s.deadline||new Date(s.deadline+'T23:59:59')>=new Date());return`<div class="card ${o?'':'off'}"><span class="tag ${o?'o':'c'}">${o?'Open':'Closed'}</span><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p><p class="mu">Deadline: ${fDay(s.deadline)}</p>${o?`<a class="btn s" href="${U(s.link)}" target="_blank" rel="noopener">Sign up</a>`:''}</div>`}).join('')||'<p class="mu">Nothing open right now.</p>'}</div></section>`;
 P.events=()=>`<section><h2>Events</h2><div class="grid">${T.events.map(e=>`<div class="card"><h3>${esc(e.title)}</h3><p class="mu">${fDay(e.date)} · ${esc(e.location)}</p>${e.date?`<a class="btn s g" href="${gcd(e.title,e.date)}" target="_blank" rel="noopener">Add to Google Calendar</a>`:''}</div>`).join('')}</div></section>`;
@@ -110,7 +118,8 @@ P.profile=()=>{if(!me)return P.login();const n=Date.now(),mine=T.sessions.filter
 P.admin=()=>!isO()?'<section><p>Officers only.</p></section>':`<section><h2>Officer Admin</h2><p class="mu">Everything here updates the live site for all visitors.</p><h3>Tutor requests</h3>${T.pend.map(p=>`<div class="card">${esc(p.name)} <button class="btn s" data-a="appr" data-id="${p.id}">Approve as tutor</button></div>`).join('')||'<p class="mu">None right now.</p>'}
  <h3>Mission &amp; announcement</h3><fieldset data-f="settings" data-key="site">${FS.site.map(f=>fld(f,S.site[f[0]])).join('')}<button class="btn s" data-a="saveset">Save</button></fieldset>
  <h3>Meeting link</h3><fieldset data-f="settings" data-key="meeting">${FS.meeting.map(f=>fld(f,S.meeting[f[0]])).join('')}<button class="btn s" data-a="saveset">Save</button></fieldset>
- <h3>Contacts</h3>${S.contacts.map((c,i)=>`<fieldset data-f="contact">${FC.map(f=>fld(f,c[f[0]])).join('')}<button class="btn s g" data-a="rmc" data-i="${i}">Remove</button></fieldset>`).join('')}<button class="btn s g" data-a="addc">+ Add contact</button> <button class="btn s" data-a="savec">Save contacts</button>${['sessions','lessons','signups','events','polls'].map(crud).join('')}<h3 style="margin-top:1.5rem">Poll results</h3>${T.polls.map(p=>{const v=T.votes.filter(x=>x.poll_id==p.id),n=c=>v.filter(x=>x.choice==c);return`<div class="card"><b>${esc(p.title)}</b><p>Yes: ${n('yes').length} · Maybe: ${n('maybe').length} · No: ${n('no').length}</p><details><summary>Who answered</summary>${['yes','maybe','no'].map(c=>`<p><b>${c}:</b> ${n(c).map(x=>esc(x.profiles?.name||'Member')).join(', ')||'none'}</p>`).join('')}</details></div>`}).join('')||'<p class="mu">No polls yet.</p>'}</section>`;
+ <h3>Contacts</h3>${S.contacts.map((c,i)=>`<fieldset data-f="contact">${FC.map(f=>fld(f,c[f[0]])).join('')}<button class="btn s g" data-a="rmc" data-i="${i}">Remove</button></fieldset>`).join('')}<button class="btn s g" data-a="addc">+ Add contact</button> <button class="btn s" data-a="savec">Save contacts</button>${['sessions','lessons','signups','events','polls'].map(crud).join('')}
+ <h3 style="margin-top:1.5rem">Poll results</h3>${T.polls.map(p=>{const v=T.votes.filter(x=>x.poll_id==p.id),n=c=>v.filter(x=>x.choice==c);return`<div class="card"><b>${esc(p.title)}</b><p>Yes: ${n('yes').length} · Maybe: ${n('maybe').length} · No: ${n('no').length}</p><details><summary>Who answered</summary>${['yes','maybe','no'].map(c=>`<p><b>${c}:</b> ${n(c).map(x=>esc(x.profiles?.name||'Member')).join(', ')||'none'}</p>`).join('')}</details></div>`}).join('')||'<p class="mu">No polls yet.</p>'}</section>`;
 async function route(){const r=location.hash.slice(2)||'home';if(r=='admin'&&isO())T.pend=(await sb.from('profiles').select('*').eq('tutor_requested',true).eq('role','member')).data||[];
  $('#main').innerHTML=(P[r]||P.home)();if(r=='lessons')lessonList();tick();scrollTo(0,0)}
 function tick(){const e=$('#cd');if(!e)return;const t=new Date(S.meeting.next)-Date.now();e.textContent=isNaN(t)?'':t<=0?'Next meeting: see schedule':`Next meeting in ${Math.floor(t/864e5)}d ${Math.floor(t/36e5)%24}h ${Math.floor(t/6e4)%60}m ${Math.floor(t/1e3)%60}s`}
@@ -120,15 +129,18 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
  if(a=='copy')return void(navigator.clipboard?.writeText(S.meeting.url).then(()=>{t.textContent='Copied!'}));
  if(a=='send')return void(location.href=mail('Message from '+($('#cn').value||'website visitor'))+'&body='+encodeURIComponent($('#cm').value));
  if(a=='mode'){L.up=!L.up;return route()}
-if(a=='eye'){const p=$('#lp'),h=p.type=='password';p.type=h?'text':'password';t.textContent=h?'Hide':'Show';return}
+ if(a=='eye'){const p=$('#lp'),h=p.type=='password';p.type=h?'text':'password';t.textContent=h?'Hide':'Show';return}
  if(!sb)return alert('Demo mode: add your Supabase URL and key at the top of index.html first.');
  const ok=r=>r.error?(alert(r.error.message),0):1,done=async()=>{await load();shell();route()};
  if(a=='auth'){const em=$('#le').value,pw=$('#lp').value,r=L.up?await sb.auth.signUp({email:em,password:pw,options:{data:{name:$('#ln').value}}}):await sb.auth.signInWithPassword({email:em,password:pw});
-  if(!ok(r))return;if(L.up&&!r.data.session)return alert('Check your email to confirm your account, then log in.');await load();shell();location.hash='#/profile';return route()}
+  if(!ok(r))return;
+  if(L.up&&r.data.user&&r.data.user.identities&&!r.data.user.identities.length){L.up=false;alert('An account with this email already exists. Please log in instead.');return route()}
+  if(L.up&&!r.data.session)return alert('Check your email to confirm your account, then log in.');
+  await load();shell();location.hash='#/profile';return route()}
  if(a=='out'){await sb.auth.signOut();location.hash='#/';return done()}
  if(a=='rsvp')return ok(R.has(id)?await sb.from('rsvps').delete().match({session_id:id,user_id:me.id}):await sb.from('rsvps').insert({session_id:id}))&&done();
-if(a=='vote')return ok(await sb.from('poll_votes').upsert({poll_id:id,user_id:me.id,choice:t.dataset.c,updated_at:new Date().toISOString()}))&&done(); 
-if(a=='post'){const o=collect($('#hf'));if(!o.title||!o.starts_at)return alert('Add a title and date/time.');o.host_name=prof.name;return ok(await sb.from('sessions').insert(o))&&done()}
+ if(a=='vote')return ok(await sb.from('poll_votes').upsert({poll_id:id,user_id:me.id,choice:t.dataset.c,updated_at:new Date().toISOString()}))&&done();
+ if(a=='post'){const o=collect($('#hf'));if(!o.title||!o.starts_at)return alert('Add a title and date/time.');o.host_name=prof.name;return ok(await sb.from('sessions').insert(o))&&done()}
  if(a=='delsess'&&confirm('Delete this session?'))return ok(await sb.from('sessions').delete().eq('id',id))&&done();
  if(a=='treq')return ok(await sb.from('profiles').update({tutor_requested:true}).eq('id',me.id))&&done();
  if(a=='saveprof')return ok(await sb.from('profiles').update(collect($('#pf'))).eq('id',me.id))&&done();
@@ -147,8 +159,5 @@ addEventListener('hashchange',route);
 (async()=>{await load();shell();route();setInterval(tick,1000)})();
 </script>
 </body>
-</html>
-</html>
-</html>
 </html>
 
