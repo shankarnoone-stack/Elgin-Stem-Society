@@ -56,7 +56,7 @@ nav a.on{background:var(--bd);font-weight:600;color:var(--nv)}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ============ SETUP: paste your two Supabase values here ============ */
-const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"PASTE-YOUR-ANON-KEY-HERE"};
+const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnVhanhkdWd3bXdsYXJ0aHpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwNDM1MDMsImV4cCI6MjEwNjYxOTUwM30.SEcrcPqOYIBdA56SdZH5V1Z35m1OHOuU1_83FE8cgjU"};
 /* ==================================================================== */
 const sb=CFG.url&&!CFG.key.startsWith("PASTE")&&window.supabase?supabase.createClient(CFG.url,CFG.key):null;
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
