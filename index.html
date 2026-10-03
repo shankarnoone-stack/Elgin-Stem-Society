@@ -48,7 +48,7 @@ img[src="logo.png"]{cursor:zoom-in}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ============ SETUP: paste your two Supabase values here ============ */
-const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"PASTE-YOUR-ANON-KEY-HERE"};
+const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnVhanhkdWd3bXdsYXJ0aHpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwNDM1MDMsImV4cCI6MjEwNjYxOTUwM30.SEcrcPqOYIBdA56SdZH5V1Z35m1OHOuU1_83FE8cgjU"};
 /* ==================================================================== */
 const sb=CFG.url&&!CFG.key.startsWith("PASTE")&&window.supabase?supabase.createClient(CFG.url,CFG.key):null;
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -93,7 +93,7 @@ const pollCard=p=>{const open=isOpenPoll(p),mine=T.votes.find(v=>v.poll_id==p.id
  (!me?'<a class="btn s" href="#/login">Log in to answer</a>':[['yes',"Yes, I'll be there"],['maybe','Maybe'],['no',"Can't make it"]].map(([c,l])=>`<button class="btn s ${mine==c?'':'g'}" ${open?'':'disabled'} data-a="vote" data-id="${p.id}" data-c="${c}">${l}</button>`).join(' '))+'</div>'};
 const P={};
 P.home=()=>{const m=S.meeting,up=T.sessions.filter(x=>new Date(x.starts_at)>=Date.now()).sort((a,b)=>a.starts_at.localeCompare(b.starts_at)).slice(0,3),op=T.polls.filter(isOpenPoll).slice(0,2);
- return`<header class="hero"><h1 style="display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap"><img class="logo" src="logo.png" alt="Elgin STEM Society logo" style="height:1.2em;width:auto">Elgin STEM Society</h1><p>Free, student-led STEM sessions in Elgin, Illinois. Learn something new, or teach what you love.</p><a class="btn" href="#/sessions">Browse sessions</a>${m.url?`<a class="btn g" href="${U(m.url)}" target="_blank" rel="noopener">Join a meeting</a>`:''}${me?'':'<a class="btn g" href="#/login">Join us</a>'}</header>
+ return`<header class="hero"><h1>Elgin STEM Society</h1><p>Free, student-led STEM sessions in Elgin, Illinois. Learn something new, or teach what you love.</p><a class="btn" href="#/sessions">Browse sessions</a>${m.url?`<a class="btn g" href="${U(m.url)}" target="_blank" rel="noopener">Join a meeting</a>`:''}${me?'':'<a class="btn g" href="#/login">Join us</a>'}</header>
 <section><h2>Our Mission</h2><div class="card mis">${esc(S.site.mission)}</div><p>${esc(S.site.about)}</p>${String(S.site.values).split(',').map(v=>`<span class="tag f">${esc(v.trim())}</span>`).join('')}</section>
 <section><h2>Meetings</h2><div class="card mt"><h3>${esc(m.when)}</h3><p>${esc(m.loc)}</p><div class="cd" id="cd"></div><p>Meeting ID: <b>${esc(m.id)}</b> · Passcode: <b>${esc(m.pass)}</b></p><a class="btn" href="${U(m.url)}" target="_blank" rel="noopener">Join Now</a> <button class="btn g s" style="color:#fff" data-a="copy">Copy link</button></div></section>
 ${op.length?`<section><h2>Are you coming?</h2><div class="grid">${op.map(pollCard).join('')}</div></section>`:''}
