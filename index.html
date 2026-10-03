@@ -7,22 +7,23 @@
 <meta name="description" content="Elgin STEM Society: free student-led STEM sessions, lesson plans and community in Elgin, Illinois.">
 <meta property="og:title" content="Elgin STEM Society">
 <meta property="og:description" content="Free peer-led STEM sessions in Elgin, IL.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f8fb;--card:#fff;--tx:#10243a;--mu:#4a5f74;--nv:#0b2545;--tl:#0b7f8b;--or:#e56f00;--bd:#d6e2ea}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a1626;--card:#12243a;--tx:#e8f0f7;--mu:#a3b6c8;--nv:#57d6e0;--tl:#57d6e0;--bd:#26425e}}
-:root[data-theme=dark]{--bg:#0a1626;--card:#12243a;--tx:#e8f0f7;--mu:#a3b6c8;--nv:#57d6e0;--tl:#57d6e0;--bd:#26425e}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-a{color:var(--tl)}h1,h2,h3{line-height:1.2;margin:0 0 .5rem}h2{font-size:1.7rem;color:var(--nv)}h3{color:var(--nv)}
+:root{--bg:#f4f8f6;--card:#fff;--tx:#0a0f14;--mu:#4a5560;--nv:#1d4ed8;--tl:#1d4ed8;--or:#15803d;--bd:#d5e0da}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#050709;--card:#10151b;--tx:#f2f6f4;--mu:#a8b3bb;--nv:#60a5fa;--tl:#60a5fa;--or:#15803d;--bd:#232d37}}
+:root[data-theme=dark]{--bg:#050709;--card:#10151b;--tx:#f2f6f4;--mu:#a8b3bb;--nv:#60a5fa;--tl:#60a5fa;--or:#15803d;--bd:#232d37}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--tl)}h1,h2,h3{font-family:"Space Grotesk","Inter",system-ui,sans-serif;letter-spacing:-.02em;line-height:1.2;margin:0 0 .5rem}h2{font-size:1.7rem;color:var(--nv)}h3{color:var(--nv)}
 section{max-width:1040px;margin:0 auto;padding:2rem 1rem}
 nav{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;gap:.25rem;align-items:center;padding:.4rem .75rem;overflow-x:auto}
-nav b{margin-right:auto;white-space:nowrap;color:var(--nv)}nav a:not(.btn){padding:.4rem .6rem;text-decoration:none;color:var(--tx);border-radius:8px;white-space:nowrap;font-size:.92rem}nav a:hover{background:var(--bd)}
+nav b{font-family:"Space Grotesk",system-ui,sans-serif;font-size:1.1rem;margin-right:auto;white-space:nowrap;color:var(--nv)}nav a:not(.btn){padding:.4rem .6rem;text-decoration:none;color:var(--tx);border-radius:8px;white-space:nowrap;font-size:.92rem}nav a:hover{background:var(--bd)}
 .btn{display:inline-block;border:0;border-radius:999px;padding:.7rem 1.3rem;font:inherit;font-weight:700;background:var(--or);color:#fff;cursor:pointer;text-decoration:none}
 .btn.g{background:transparent;border:2px solid currentColor;color:var(--tl)}.btn.s{padding:.35rem .8rem;font-size:.85rem}.hero .btn.g{color:#fff}
 :focus-visible{outline:3px solid var(--or);outline-offset:2px}
-.hero{background:linear-gradient(135deg,#0b2545,#0b7f8b);color:#fff;text-align:center;padding:4rem 1rem}.hero h1{font-size:clamp(2rem,6vw,3.3rem)}.hero p{max-width:620px;margin:0 auto 1.5rem;font-size:1.15rem}.hero .btn{margin:.25rem}
+.hero{background:linear-gradient(135deg,#05080b,#1d4ed8 60%,#15803d);color:#fff;text-align:center;padding:4rem 1rem}.hero h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:700}.hero p{max-width:620px;margin:0 auto 1.5rem;font-size:1.15rem}.hero .btn{margin:.25rem}
 .ann{background:var(--or);color:#fff;text-align:center;padding:.5rem 1rem;font-weight:600}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:1.1rem;margin-bottom:1rem}.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}.grid .card{margin:0}
-.mis{border-left:6px solid var(--or);font-size:1.2rem}.mt{background:var(--nv);color:#fff}.mt h3{color:#fff}.cd{font-size:1.7rem;font-weight:800}
+.mis{border-left:6px solid var(--or);font-size:1.2rem}.mt{background:#0b1f4d;color:#fff}.mt h3{color:#fff}.cd{font-size:1.7rem;font-weight:800}
 .tag{display:inline-block;background:var(--bd);border-radius:999px;padding:.1rem .6rem;font-size:.8rem;margin:0 .3rem .3rem 0}.tag.f{background:var(--or);color:#fff}.tag.o{background:#d8f3e3;color:#0a5a2b}.tag.c{background:#ffe0dc;color:#9b1c10}
 .off{opacity:.55}.mu{color:var(--mu)}
 input,select,textarea{font:inherit;width:100%;padding:.5rem;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx)}
@@ -30,7 +31,7 @@ label{display:block;font-size:.85rem;color:var(--mu);margin:.5rem 0}.ck{display:
 fieldset{border:1px solid var(--bd);border-radius:12px;margin:.6rem 0;padding:.6rem}
 .fl{display:grid;gap:.5rem;grid-template-columns:2fr 1fr;margin-bottom:1rem}.stat{font-size:1.8rem;font-weight:800;color:var(--tl)}
 details{margin:.4rem 0}summary{cursor:pointer;color:var(--tl);font-weight:600}
-footer{background:var(--nv);color:#fff;padding:1.5rem 1rem;text-align:center;margin-top:2rem}footer a{color:#9ff}
+footer{background:#05080b;border-top:4px solid #15803d;color:#fff;padding:1.5rem 1rem;text-align:center;margin-top:2rem}footer a{color:#86efac}
 </style>
 </head>
 <body>
@@ -91,7 +92,7 @@ P.lessons=()=>`<section><h2>Lesson Plans</h2><div class="fl"><input id="lq" plac
 P.signups=()=>`<section><h2>Sign-Ups</h2><div class="grid">${T.signups.map(s=>{const o=s.active&&(!s.deadline||new Date(s.deadline+'T23:59:59')>=new Date());return`<div class="card ${o?'':'off'}"><span class="tag ${o?'o':'c'}">${o?'Open':'Closed'}</span><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p><p class="mu">Deadline: ${fDay(s.deadline)}</p>${o?`<a class="btn s" href="${U(s.link)}" target="_blank" rel="noopener">Sign up</a>`:''}</div>`}).join('')||'<p class="mu">Nothing open right now.</p>'}</div></section>`;
 P.events=()=>`<section><h2>Events</h2><div class="grid">${T.events.map(e=>`<div class="card"><h3>${esc(e.title)}</h3><p class="mu">${fDay(e.date)} · ${esc(e.location)}</p>${e.date?`<a class="btn s g" href="${gcd(e.title,e.date)}" target="_blank" rel="noopener">Add to Google Calendar</a>`:''}</div>`).join('')}</div></section>`;
 P.contact=()=>`<section><h2>Contact</h2><div class="grid">${S.contacts.map(c=>`<div class="card"><h3>${esc(c.name)}</h3><p class="mu">${esc(c.role)}</p><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>`).join('')}</div><div class="card"><h3>Send a message</h3><label>Your name<input id="cn"></label><label>Message<textarea id="cm" rows="4"></textarea></label><button class="btn" data-a="send">Send email</button></div></section>`;
-P.login=()=>`<section><div class="card" style="max-width:420px;margin:auto"><h2>${L.up?'Create account':'Log in'}</h2>${L.up?'<label>Name<input id="ln" autocomplete="name"></label>':''}<label>Email<input id="le" type="email" autocomplete="email"></label><label>Password<input id="lp" type="password" autocomplete="${L.up?'new-password':'current-password'}"></label><p><button class="btn" data-a="auth">${L.up?'Sign up':'Log in'}</button> <button class="btn s g" data-a="mode">${L.up?'I have an account':'Create an account'}</button></p><p class="mu">Your name is visible to other logged-in members. Share only what you are comfortable with.</p></div></section>`;
+P.login=()=>`<section><div class="card" style="max-width:420px;margin:auto"><h2>${L.up?'Create account':'Log in'}</h2>${L.up?'<label>Name<input id="ln" autocomplete="name"></label>':''}<label>Email<input id="le" type="email" autocomplete="email"></label><label for="lp">Password</label><div style="display:flex;gap:.4rem"><input id="lp" type="password" autocomplete="${L.up?'new-password':'current-password'}"><button type="button" class="btn s g" data-a="eye" aria-label="Show or hide password">Show</button></div><p><button class="btn" data-a="auth">${L.up?'Sign up':'Log in'}</button> <button class="btn s g" data-a="mode">${L.up?'I have an account':'Create an account'}</button></p><p class="mu">Your name is visible to other logged-in members. Share only what you are comfortable with.</p></div></section>`;
 P.profile=()=>{if(!me)return P.login();const n=Date.now(),mine=T.sessions.filter(x=>x.host_id==me.id&&new Date(x.starts_at)<n),att=T.sessions.filter(x=>R.has(x.id)&&new Date(x.starts_at)<n);
  return`<section><h2>My Profile</h2><span class="tag f">${esc(prof?.role)}</span><div class="grid" style="margin:1rem 0"><div class="card"><div class="stat">${att.length}</div>sessions attended</div><div class="card"><div class="stat">${mine.length}</div>sessions taught</div><div class="card"><div class="stat">${(mine.reduce((a,x)=>a+(+x.duration_min||60),0)/60).toFixed(1)}</div>hours taught</div></div>
  <div class="card" id="pf"><label>Name<input data-k="name" value="${esc(prof?.name)}"></label><label>Subjects you know<input data-k="subjects" value="${esc(prof?.subjects)}"></label><label>Short bio<textarea rows="3" data-k="bio">${esc(prof?.bio)}</textarea></label><button class="btn s" data-a="saveprof">Save profile</button></div></section>`};
@@ -108,6 +109,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
  if(a=='copy')return void(navigator.clipboard?.writeText(S.meeting.url).then(()=>{t.textContent='Copied!'}));
  if(a=='send')return void(location.href=mail('Message from '+($('#cn').value||'website visitor'))+'&body='+encodeURIComponent($('#cm').value));
  if(a=='mode'){L.up=!L.up;return route()}
+if(a=='eye'){const p=$('#lp'),h=p.type=='password';p.type=h?'text':'password';t.textContent=h?'Hide':'Show';return}
  if(!sb)return alert('Demo mode: add your Supabase URL and key at the top of index.html first.');
  const ok=r=>r.error?(alert(r.error.message),0):1,done=async()=>{await load();shell();route()};
  if(a=='auth'){const em=$('#le').value,pw=$('#lp').value,r=L.up?await sb.auth.signUp({email:em,password:pw,options:{data:{name:$('#ln').value}}}):await sb.auth.signInWithPassword({email:em,password:pw});
