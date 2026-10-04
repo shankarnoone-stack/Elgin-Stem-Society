@@ -49,13 +49,6 @@ nav a.on{background:var(--bd);font-weight:600;color:var(--nv)}
 #toast{position:fixed;left:50%;bottom:1.5rem;transform:translateX(-50%) translateY(20px);background:#0a0f14;color:#fff;padding:.7rem 1.2rem;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:90vw;box-shadow:0 8px 24px rgba(0,0,0,.35)}#toast.on{opacity:1;transform:translateX(-50%)}
 .fcols{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));max-width:1040px;margin:0 auto 1.2rem;text-align:left}.fcols a{display:block;margin:.3rem 0}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-nav{overflow:visible;flex-wrap:wrap}
-.acct{position:relative}.acct summary{list-style:none;cursor:pointer;padding:.35rem .8rem;border:1px solid var(--bd);border-radius:999px;font-size:.9rem;white-space:nowrap}.acct summary::-webkit-details-marker{display:none}
-.acct>div{position:absolute;right:0;top:calc(100% + .4rem);background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:.4rem;min-width:190px;box-shadow:0 8px 24px rgba(10,15,20,.18);display:flex;flex-direction:column;z-index:20}
-.acct>div a,.acct>div button{display:block;text-align:left;background:none;border:0;color:var(--tx);font:inherit;padding:.5rem .7rem;border-radius:8px;cursor:pointer;text-decoration:none}.acct>div a:hover,.acct>div button:hover{background:var(--bd)}
-.sub{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.6rem}.sub a,.sub button{background:none;border:0;padding:0;font:inherit;font-size:.85rem;color:var(--tl);cursor:pointer;text-decoration:underline}
-.tabbar{display:flex;gap:.4rem;flex-wrap:wrap;margin:1rem 0}.tabs>[data-tab]{display:none}
-.tabs[data-t=ov]>[data-tab=ov],.tabs[data-t=mem]>[data-tab=mem],.tabs[data-t=site]>[data-tab=site],.tabs[data-t=cont]>[data-tab=cont]{display:block}
 </style>
 </head>
 <body>
@@ -63,7 +56,7 @@ nav{overflow:visible;flex-wrap:wrap}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ============ SETUP: paste your two Supabase values here ============ */
-const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"PASTE-YOUR-ANON-KEY-HERE"};
+const CFG={url:"https://byruajxdugwmwlarthzd.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnVhanhkdWd3bXdsYXJ0aHpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwNDM1MDMsImV4cCI6MjEwNjYxOTUwM30.SEcrcPqOYIBdA56SdZH5V1Z35m1OHOuU1_83FE8cgjU"};
 /* ==================================================================== */
 const sb=CFG.url&&!CFG.key.startsWith("PASTE")&&window.supabase?supabase.createClient(CFG.url,CFG.key):null;
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -91,9 +84,9 @@ async function load(){if(!sb)return;
  const{data:{session}}=await sb.auth.getSession();me=session?.user||null;prof=null;R=new Set();
  if(me){prof=(await sb.from('profiles').select('*').eq('id',me.id).single()).data;R=new Set(((await sb.from('rsvps').select('session_id').eq('user_id',me.id)).data||[]).map(r=>r.session_id));T.votes=(await sb.from('poll_votes').select(isO()?'*,profiles(name)':'*')).data||[]}else T.votes=[]}
 const mail=s=>'mailto:'+S.contacts.map(c=>esc(c.email)).join(',')+'?subject='+encodeURIComponent(s);
-function shell(){const N={sessions:'Sessions',lessons:'Lessons',events:'Events',signups:'Sign-Ups',contact:'Contact'};
+function shell(){const N={sessions:'Sessions',lessons:'Lessons',signups:'Sign-Ups',polls:'Polls',events:'Events',contact:'Contact'};
  $('#ann').innerHTML=S.site.announce_on?`<div class="ann" role="status">${esc(S.site.announce)}</div>`:'';
- $('#nav').innerHTML='<b><a href="#/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem"><img class="logo" src="logo.png" alt="Elgin STEM Society logo" style="height:32px;width:auto">Elgin STEM</a></b>'+Object.keys(N).map(k=>`<a href="#/${k}">${N[k]}</a>`).join('')+(me?`<details class="acct"><summary>${esc(prof?.name||'Account')} ▾</summary><div><a href="#/profile">My profile</a>${isO()?'<a href="#/admin">Admin</a>':''}<button data-a="theme">Dark / light mode</button><button data-a="out">Log out</button></div></details>`:'<a class="btn s" href="#/login">Log in</a><button class="btn s g" data-a="theme" aria-label="Toggle dark mode">◐</button>');
+ $('#nav').innerHTML='<b><a href="#/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem"><img class="logo" src="logo.png" alt="Elgin STEM Society logo" style="height:32px;width:auto">Elgin STEM</a></b>'+Object.keys(N).map(k=>`<a href="#/${k}">${N[k]}</a>`).join('')+(me?`<a href="#/profile">${esc(prof?.name||'Profile')}</a>${isO()?'<a href="#/admin">Admin</a>':''}<button class="btn s g" data-a="out">Log out</button>`:'<a class="btn s" href="#/login">Log in</a>')+'<button class="btn s g" data-a="theme" aria-label="Toggle dark mode">◐</button>';
  $('#foot').innerHTML=`<div class="fcols"><div><b>Elgin STEM Society</b><p>Free, student-led STEM learning in Elgin, Illinois.</p></div><div><b>Explore</b><a href="#/sessions">Sessions</a><a href="#/lessons">Lesson Plans</a><a href="#/events">Events</a><a href="#/signups">Sign-Ups</a></div><div><b>Contact</b>${S.contacts.map(c=>`<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>`).join('')}</div></div><p style="opacity:.7;font-size:.85rem;margin:0">© ${new Date().getFullYear()} Elgin STEM Society. All rights reserved.</p>`}
 const scard=(x,p)=>`<div class="card ${p?'off':''}"><span class="tag">${esc(x.subject)}</span><span class="tag">${fD(x.starts_at)}</span><h3>${esc(x.title)}</h3><p class="mu">Led by ${esc(x.host_name)} · ${+x.duration_min||60} min</p><p>${esc(x.description)}</p>`+
  (p?(x.recording?`<a class="btn s" href="${U(x.recording)}" target="_blank" rel="noopener">Watch recording</a>`:''):
