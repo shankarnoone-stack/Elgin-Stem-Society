@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<base href="/Elgin-Stem-Society/">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="logo.png">
 <title>Elgin STEM Society</title>
@@ -12,8 +13,9 @@
 <meta property="og:url" content="https://shankarnoone-stack.github.io/Elgin-Stem-Society/">
 <meta property="og:title" content="Elgin STEM Society">
 <meta property="og:description" content="Free peer-led STEM sessions in Elgin, IL.">
-<meta property="og:image" content="https://shankarnoone-stack.github.io/Elgin-Stem-Society/logo.png">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://shankarnoone-stack.github.io/Elgin-Stem-Society/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Elgin STEM Society","url":"https://shankarnoone-stack.github.io/Elgin-Stem-Society/","logo":"https://shankarnoone-stack.github.io/Elgin-Stem-Society/logo.png","description":"Free student-led STEM sessions in Elgin, Illinois.","areaServed":"Elgin, Illinois"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -92,10 +94,6 @@ nav b a.on{background:none}
 nav b{display:flex;align-items:center;gap:.6rem}.loc{font:500 .75rem "Inter",sans-serif;color:var(--mu);border-left:1px solid var(--bd);padding-left:.6rem;white-space:nowrap}
 @media(max-width:700px){.loc{display:none}}
 .hero .eyebrow{margin:0 0 .75rem;max-width:none}.hero .btn{margin:0}
-.bars{display:grid;gap:.6rem}.bar{display:grid;grid-template-columns:minmax(110px,200px) 1fr 36px;gap:.6rem;align-items:center;font-size:.9rem}.bar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bar i{display:block;height:12px;border-radius:6px;background:var(--or);min-width:3px}.bar b{text-align:right}
-.sc{margin:0 0 .3rem;font-weight:600;color:var(--or);font-size:.9rem}
-.skl{background:linear-gradient(90deg,var(--bd),transparent,var(--bd));background-size:200% 100%;animation:sh 1.4s infinite;border-radius:10px}@keyframes sh{to{background-position:-200% 0}}
-.annx{background:none;border:0;color:#fff;cursor:pointer;font:inherit;margin-left:.5rem;opacity:.85}
 </style>
 </head>
 <body>
@@ -121,22 +119,10 @@ function calcStreak(sessions,K,n){
  let run=0,best=0,fz=0,since=0;
  E.forEach(w=>{if(A.has(w)){run++;since++;if(since>=4&&fz<2){fz++;since=0}}else if(fz>0){fz--;used.add(w)}else{run=0;since=0}best=Math.max(best,run)});
  return{c:run,best,E,A,used,fz,total:A.size}}
-const DAYS=['sun','mon','tue','wed','thu','fri','sat'];
-/* "Wednesdays, 6:00 PM" -> {day:3,h:18,mi:0} */
-function parseWhen(s){s=String(s||'').toLowerCase();const d=s.match(/\b(sun|mon|tue|wed|thu|fri|sat)/),t=s.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/);if(!d||!t)return null;let h=+t[1]%12;if(t[3]=='pm')h+=12;return{day:DAYS.indexOf(d[1]),h,mi:+(t[2]||0)}}
-function recur(m){m=m||{};if(m.day!==undefined&&m.day!==''&&m.time){const p=String(m.time).split(':');return{day:+m.day,h:+p[0],mi:+(p[1]||0)}}return parseWhen(m.when)}
-/* Converts a wall-clock time in a time zone (default Central) to a UTC timestamp, DST-safe */
-function tzWall(y,mo,d,h,mi,tz){const want=Date.UTC(y,mo-1,d,h,mi);let t=want;for(let i=0;i<3;i++){const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}).formatToParts(new Date(t)),g=k=>+p.find(x=>x.type==k).value;t+=want-Date.UTC(g('year'),g('month')-1,g('day'),g('hour'),g('minute'))}return t}
-function weekly(rec,n,tz){const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date(n)),g=k=>+p.find(x=>x.type==k).value;
- for(let i=0;i<=7;i++){const dt=new Date(Date.UTC(g('year'),g('month')-1,g('day')+i));if(dt.getUTCDay()!=rec.day)continue;const t=tzWall(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate(),rec.h,rec.mi,tz);if(t+36e5>n)return t}return null}
-/* Soonest of: a one-time "next meeting", the weekly schedule, and any scheduled session. */
-function targets(mt,sessions,n,tz){tz=tz||'America/Chicago';mt=mt||{};const c=[],m=new Date(mt.next).getTime();
- if(!isNaN(m)&&m+36e5>=n)c.push({t:m,l:'Next meeting'});
- const rec=recur(mt);if(rec){const t=weekly(rec,n,tz);if(t!=null)c.push({t,l:'Weekly meeting'})}
- sessions.filter(x=>!ended(x,n)).forEach(x=>c.push({t:st(x),l:x.title}));
- c.sort((a,b)=>a.t-b.t);return c}
-function nextTarget(mt,sessions,n,tz){return targets(mt,sessions,n,tz)[0]||null}
-g.Core={wk,ended,live,calcStreak,nextTarget,targets,parseWhen,weekly};if(typeof module!=='undefined'&&module.exports)module.exports=g.Core;
+function nextTarget(meetNext,sessions,n){
+ const m=new Date(meetNext).getTime();if(!isNaN(m)&&m+36e5>=n)return{t:m,l:'Next meeting'};
+ const s=sessions.filter(x=>!ended(x,n)).sort((a,b)=>a.starts_at.localeCompare(b.starts_at))[0];return s?{t:st(s),l:s.title}:null}
+g.Core={wk,ended,live,calcStreak,nextTarget};if(typeof module!=='undefined'&&module.exports)module.exports=g.Core;
 })(typeof window!=='undefined'?window:globalThis);
 </script>
 <script id="app">
@@ -149,7 +135,7 @@ const U=u=>/^(https?:\/\/|mailto:)/i.test(String(u||'').trim())?esc(String(u).tr
 const fD=d=>d?new Date(d).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'}):'',fDay=d=>d?new Date(d+'T12:00').toLocaleDateString(undefined,{dateStyle:'medium'}):'';
 const gc=(t,s,m)=>{const f=d=>new Date(d).toISOString().replace(/[-:]|\.\d+/g,'');return'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+f(s)+'/'+f(new Date(s).getTime()+m*6e4)};
 const gcd=(t,d)=>{const n=new Date(d+'T12:00');n.setDate(n.getDate()+1);return'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+d.replace(/-/g,'')+'/'+n.toISOString().slice(0,10).replace(/-/g,'')};
-let S={site:{mission:"The Elgin STEM Society empowers students to explore science, technology, engineering, and math through hands-on learning, collaboration, and community.",about:"We are a student-run club in Elgin, Illinois. No experience needed.",values:"Curiosity, Teamwork, Inclusivity",announce_on:!sb,announce:"Demo mode with sample data. Connect Supabase to turn on real accounts and editing."},meeting:{url:"",when:"Wednesdays, 6:00 PM",next:"",loc:"Online",id:"",pass:""},contacts:[{name:"Shankar Noone",role:"Officer",email:"shankarnoone@gmail.com"},{name:"Krishiv Mahadik",role:"Officer",email:"krishivmahadik@gmail.com"}]};
+let S={site:{mission:"The Elgin STEM Society empowers students to explore science, technology, engineering, and math through hands-on learning, collaboration, and community.",about:"We are a student-run club dedicated to making STEM accessible for everyone. No experience needed.",values:"Curiosity, Teamwork, Inclusivity",announce_on:!sb,announce:"Demo mode with sample data. Connect Supabase to turn on real accounts and editing."},meeting:{url:"",when:"Wednesdays, 6:00 PM",next:"",loc:"Online",id:"",pass:""},contacts:[{name:"Shankar Noone",role:"Officer",email:"shankarnoone@gmail.com"},{name:"Krishiv Mahadik",role:"Officer",email:"krishivmahadik@gmail.com"}]};
 let T={sessions:[],lessons:[],signups:[],events:[],polls:[],votes:[],pend:[],mem:[],rsvps:[],chk:[],err:[],msg:[]},me=null,prof=null,R=new Set(),K=new Set(),F={s:'',q:'',ls:'',mq:'',mr:''},L={up:false},AT='ov',DK=[];
 const isO=()=>['officer','cofounder'].includes(prof?.role),canHost=()=>['tutor','officer','cofounder'].includes(prof?.role);
 const RL={cofounder:'Co-Founder',officer:'Officer',tutor:'Tutor',member:'Member'};
@@ -157,11 +143,11 @@ const TT={sessions:'Sessions',lessons:'Lesson Plans',signups:'Sign-Ups',polls:'P
 /* Toasts stay on screen longer for longer messages (errors) and can be clicked away */
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),Math.min(10000,2500+String(m).length*60))};window.alert=toast;
 $('#toast').onclick=()=>{clearTimeout(toast.h);$('#toast').classList.remove('on')};
-const BASE=location.pathname.replace(/[^/]*$/,''),cur=()=>decodeURI(location.hash).slice(2).replace(/\/+$/,'')||'home';
-let RC={},OFF=0;const now=()=>Date.now()+OFF;
+const BASE=new URL(document.baseURI).pathname.replace(/[^/]*$/,''),cur=()=>decodeURI(location.pathname).slice(BASE.length).replace(/\/+$/,'')||'home';
+let OFF=0;const now=()=>Date.now()+OFF;
 async function syncTime(){try{const t0=Date.now(),r=await fetch(BASE,{method:'HEAD',cache:'no-store'}),t1=Date.now(),d=r.headers.get('date');if(d)OFF=new Date(d).getTime()-(t0+t1)/2}catch(e){}}
-const fix=()=>document.querySelectorAll('a[href^="#/"]').forEach(a=>{const r=a.getAttribute('href').slice(2);a.dataset.r=r||'home'});
-const go=r=>{const t='#/'+(r=='home'?'':r);if(location.hash==t||(!location.hash&&r=='home'))return route();location.hash=t};
+const fix=()=>document.querySelectorAll('a[href^="#/"]').forEach(a=>{const r=a.getAttribute('href').slice(2);a.dataset.r=r||'home';a.setAttribute('href',BASE+r)});
+const go=r=>{history.pushState({},'',BASE+(r=='home'?'':r));return route()};
 let ER=0;const report=m=>{if(ER++>4||!sb)return;sb.from('client_errors').insert({message:String(m).slice(0,300),page:location.pathname,ua:navigator.userAgent.slice(0,120)}).then(()=>{},()=>{})};
 addEventListener('error',e=>report(e.message));addEventListener('unhandledrejection',e=>report(e.reason?.message||e.reason));
 const skOff=()=>{try{return localStorage.getItem('nsk')=='1'}catch(e){return false}};
@@ -179,8 +165,8 @@ async function showCode(id){const m=$('#md');let on=true;const close=()=>{on=fal
  let code='',exp=0;while(on){if(now()>=exp){const r=await sb.rpc('get_code',{sid:id});if(r.error){alert(r.error.message);close();return}code=r.data.code;exp=now()+r.data.secs*1e3}
   const c=$('#cc'),x=$('#cx');if(c){c.textContent=code;x.textContent='New code in '+Math.max(0,Math.ceil((exp-now())/1e3))+'s'}await new Promise(r=>setTimeout(r,1000))}}
 const FD={sessions:[['title'],['subject'],['host_name'],['starts_at','dt'],['duration_min','num'],['description','area'],['link'],['recording']],lessons:[['title'],['subject'],['level'],['description','area'],['link'],['featured','chk']],signups:[['title'],['description','area'],['deadline','date'],['link'],['active','chk']],events:[['title'],['date','date'],['location'],['description','area'],['link']],polls:[['title'],['description','area'],['kind'],['closes_at','dt'],['active','chk']]};
-const FS={site:[['mission','area'],['about','area'],['values'],['announce_on','chk'],['announce'],['donate_url'],['legal']],meeting:[['url'],['when'],['day','sel'],['time','time'],['next','dt'],['loc'],['id'],['pass']]},FC=[['name'],['role'],['email']];
-const LB={mission:'Mission Statement',about:'About Us',values:'Club Values',announce_on:'Show Announcement Banner',announce:'Announcement Text',url:'Meeting Link',when:'Meeting Schedule',next:'One-time Next Meeting (optional override)',day:'Weekly Meeting Day (optional)',time:'Weekly Meeting Time, Central (optional)',loc:'Location',id:'Meeting ID',pass:'Passcode',host_name:'Host Name',starts_at:'Date & Time',duration_min:'Duration (Minutes)',closes_at:'Poll Closes',kind:'Poll Type',link:'Link',recording:'Recording Link',description:'Description',active:'Active',featured:'Featured Lesson Plan',legal:'Legal / tax status line (optional)',donate_url:'Donate Link (optional)',deadline:'Sign-Up Deadline',location:'Location'};
+const FS={site:[['mission','area'],['about','area'],['values'],['announce_on','chk'],['announce'],['donate_url'],['legal']],meeting:[['url'],['when'],['next','dt'],['loc'],['id'],['pass']]},FC=[['name'],['role'],['email']];
+const LB={mission:'Mission Statement',about:'About Us',values:'Club Values',announce_on:'Show Announcement Banner',announce:'Announcement Text',url:'Meeting Link',when:'Meeting Schedule',next:'Next Meeting Date & Time',loc:'Location',id:'Meeting ID',pass:'Passcode',host_name:'Host Name',starts_at:'Date & Time',duration_min:'Duration (Minutes)',closes_at:'Poll Closes',kind:'Poll Type',link:'Link',recording:'Recording Link',description:'Description',active:'Active',featured:'Featured Lesson Plan',legal:'Legal / tax status line (optional)',donate_url:'Donate Link (optional)',deadline:'Sign-Up Deadline',location:'Location'};
 const lab=k=>LB[k]||k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' ');
 const TN={sessions:'Sessions',lessons:'Lesson Plans',signups:'Sign-Ups',events:'Events',polls:'Attendance Polls'};
 const RES=[['Science Olympiad','https://www.soinc.org'],['FIRST Robotics','https://www.firstinspires.org'],['Khan Academy','https://www.khanacademy.org'],['Scratch','https://scratch.mit.edu']];
@@ -189,7 +175,7 @@ const FAQ=[['What is the Elgin STEM Society?','A student-run organization in Elg
 /* ---------- Demo data (only used when Supabase is not connected) ---------- */
 function demo(){if(T.sessions.length)return;const n=Date.now(),H=36e5,W=6048e5,D=864e5,iso=o=>new Date(n+o).toISOString();
  const ti=['Intro to Python','Circuits 101','Chemistry Demos','Robotics Basics','Math Puzzles','Physics of Flight','Web Design','Data Science Intro'];
- RC={live:12,u1:7};T.sessions=[...ti.map((t,i)=>({id:'p'+(i+1),title:t,subject:['Coding','Engineering','Science','Engineering','Math','Science','Coding','Math'][i],starts_at:iso(-(i+1)*W-H),duration_min:60,host_name:'Club tutor',description:'Hands-on peer-led session.',recording:''})),
+ T.sessions=[...ti.map((t,i)=>({id:'p'+(i+1),title:t,subject:['Coding','Engineering','Science','Engineering','Math','Science','Coding','Math'][i],starts_at:iso(-(i+1)*W-H),duration_min:60,host_name:'Club tutor',description:'Hands-on peer-led session.',recording:''})),
   {id:'live',title:'Arduino Night',subject:'Engineering',starts_at:iso(-10*6e4),duration_min:60,host_name:'Krishiv M.',description:'Happening now. Use demo code 1234 to check in.',link:'#'},
   {id:'u1',title:'Intro to Machine Learning',subject:'Coding',starts_at:iso(2*D),duration_min:60,host_name:'Shankar N.',description:'Train your first model in the browser.',link:'#'}];
  DK=['p1','p2','p3','p4','p6','p7','p8'];
@@ -197,7 +183,7 @@ function demo(){if(T.sessions.length)return;const n=Date.now(),H=36e5,W=6048e5,D
  T.events=[{id:'e1',author_id:'demo',author_name:'Demo Tutor',description:'Student projects, demos and hands-on activities for families.',title:'Spring STEM Fair',date:new Date(n+30*D).toISOString().slice(0,10),location:'Elgin Public Library'}];
  T.signups=[{id:'g1',title:'Volunteer tutors',description:'Teach a session this semester.',deadline:new Date(n+14*D).toISOString().slice(0,10),link:'https://example.com',active:true}];
  T.polls=[{id:'po1',kind:'Attendance',title:'Coming to Wednesday?',description:'Help us plan snacks and seats.',active:true,closes_at:iso(2*D)}];
- try{const d=JSON.parse(localStorage.getItem('demo')||'null');if(d&&d.me){me={id:'demo'};prof={name:'Demo Tutor',role:'tutor'};R=new Set(d.R);K=new Set(d.K);T.votes=d.V||[]}}catch(e){}}
+ S.meeting.next=iso(2*D);try{const d=JSON.parse(localStorage.getItem('demo')||'null');if(d&&d.me){me={id:'demo'};prof={name:'Demo Tutor',role:'tutor'};R=new Set(d.R);K=new Set(d.K);T.votes=d.V||[]}}catch(e){}}
 
 async function load(){if(!sb){demo();return}
  try{const q=t=>sb.from(t).select('*'),[st,a]=await Promise.all(['settings','sessions'].map(q));
@@ -209,7 +195,7 @@ async function load(){if(!sb){demo();return}
   let vq=sb.from('poll_votes').select(isO()?'*,profiles(name)':'*');if(!isO())vq=vq.eq('user_id',me.id);T.votes=(await vq).data||[]}
  }catch(e){toast('Could not load site data: '+(e.message||e));report(e.message)}}
 /* Secondary content loads after the first paint */
-async function loadRest(){if(!sb)return;try{const q=t=>sb.from(t).select('*'),[b,c,d,p]=await Promise.all([q('lessons'),q('signups'),q('events'),sb.from('polls').select('*').order('created_at',{ascending:false})]);T.lessons=b.data||[];T.signups=c.data||[];T.events=d.data||[];T.polls=p.data||[];const rc=await sb.rpc('rsvp_counts');RC=rc.error?{}:Object.fromEntries((rc.data||[]).map(r=>[r.session_id,+r.n]))}catch(e){report(e.message)}}
+async function loadRest(){if(!sb)return;try{const q=t=>sb.from(t).select('*'),[b,c,d,p]=await Promise.all([q('lessons'),q('signups'),q('events'),sb.from('polls').select('*').order('created_at',{ascending:false})]);T.lessons=b.data||[];T.signups=c.data||[];T.events=d.data||[];T.polls=p.data||[]}catch(e){report(e.message)}}
 
 /* ---------- Time helpers & streaks ---------- */
 const ended=x=>Core.ended(x,now()),live=x=>Core.live(x,now()),streak=()=>Core.calcStreak(T.sessions,K,now());
@@ -221,20 +207,18 @@ const streakCard=()=>{if(skOff())return'<div class="card"><p class="mu" style="m
  <p>${B.map(([n,l])=>`<span class="tag ${s.best>=n?'f':''}" style="${s.best>=n?'':'opacity:.6'}">${s.best>=n?'🏅':'🔒'} ${l} · ${n} wks</span>`).join('')}</p>${s.c?'<button class="btn s g" data-a="shs">Share my streak</button> ':''}<button class="btn s g" data-a="sktoggle">Hide streaks</button></div>`};
 
 function shell(){const N={sessions:'Sessions',lessons:'Lesson Plans',signups:'Sign-Ups',polls:'Polls',events:'Events',contact:'Contact'};
- let hid='';try{hid=localStorage.getItem('ann')||''}catch(e){}
- $('#ann').innerHTML=S.site.announce_on&&hid!==S.site.announce?`<div class="ann" role="status">${esc(S.site.announce)} <button class="annx" data-a="annx" aria-label="Dismiss announcement">✕</button></div>`:'';
+ $('#ann').innerHTML=S.site.announce_on?`<div class="ann" role="status">${esc(S.site.announce)}</div>`:'';
  $('#nav').innerHTML='<b><a href="#/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem"><img class="logo" src="logo.png" alt="Elgin STEM Society logo" style="height:32px;width:auto"><span class="bn">Elgin STEM Society</span></a></b>'+Object.keys(N).map(k=>`<a href="#/${k}">${N[k]}</a>`).join('')+(me?`<a href="#/profile" title="Your profile and streak">${skOff()?'':'🔥 '+streak().c+' · '}${esc(prof?.name||'Profile')}</a>${isO()?'<a href="#/admin">Admin</a>':''}<button class="btn s g" data-a="out">Log out</button>`:'<a class="btn s" href="#/login">Log in</a>')+(S.site.donate_url?'<a class="btn s d" href="'+U(S.site.donate_url)+'" target="_blank" rel="noopener">Donate</a>':'')+'<button class="btn s g" data-a="theme" aria-label="Toggle dark mode">◐</button>';
  $('#foot').innerHTML=`<div class="fcols"><div><b class="fb">Elgin STEM Society</b><p>Free, student-led STEM education in Elgin, Illinois.</p>${S.site.donate_url?`<a class="btn d s" href="${U(S.site.donate_url)}" target="_blank" rel="noopener">Donate</a>`:''}</div><div><b>Explore</b><a href="#/sessions">Sessions</a><a href="#/lessons">Lesson Plans</a><a href="#/events">Events</a><a href="#/signups">Sign-Ups</a></div><div><b>Get involved</b><a href="#/sessions">Become a tutor</a><a href="#/contact">Partner with us</a><a href="#/contact">Contact us</a></div><div><b>About</b><a href="#/privacy">Privacy &amp; safety</a></div></div><div class="fbot"><span>© ${new Date().getFullYear()} Elgin STEM Society. All rights reserved.</span>${S.site.legal?`<span>${esc(S.site.legal)}</span>`:''}</div>`;fix()}
 
 const scard=(x,p)=>{const mg=me&&(x.host_id==me.id||isO()),ck=me&&K.has(x.id);
  const act=p?(x.recording?`<a class="btn s" href="${U(x.recording)}" target="_blank" rel="noopener">Watch recording</a>`:''):!me?'<a class="btn s" href="#/login">Log in to RSVP</a>':R.has(x.id)&&x.link?`<a class="btn s" href="${U(x.link)}" target="_blank" rel="noopener">Join session</a>`:R.has(x.id)?'<span class="tag o">Going ✓</span>':`<button class="btn s" data-a="rsvp" data-id="${x.id}">RSVP</button>`;
- const sub=me?[!p&&R.has(x.id)?`<button data-a="rsvp" data-id="${x.id}">Cancel RSVP</button>`:'',!p?`<a href="${gc(x.title,x.starts_at,+x.duration_min||60)}" target="_blank" rel="noopener">Add to calendar</a>`:'',!p?`<button data-a="ics" data-ts="${new Date(x.starts_at).getTime()}" data-m="${+x.duration_min||60}" data-title="${esc(x.title)}">.ics</button>`:'',!p?`<button data-a="share" data-id="${x.id}">Share</button>`:'',mg?`<button data-a="code" data-id="${x.id}">Check-in code</button>`:'',mg?`<button data-a="delsess" data-id="${x.id}">Delete</button>`:''].join(''):'';
- return`<div class="card ${p?'off':''}"><span class="tag">${esc(x.subject)}</span><span class="tag">${fD(x.starts_at)}</span>${live(x)&&!p?'<span class="tag f">Live now</span>':''}${!p&&RC[x.id]?`<span class="tag">👥 ${RC[x.id]} going</span>`:''}${p?'':`<p class="sc" data-ts="${new Date(x.starts_at).getTime()}"></p>`}<h3>${esc(x.title)}</h3><p class="mu">Led by ${esc(x.host_name)} · ${+x.duration_min||60} min</p><p>${esc(x.description)}</p>${ck?'<span class="tag o">Checked in ✓</span> ':''}${me&&!ck&&live(x)?`<button class="btn s" data-a="checkin" data-id="${x.id}">Check in</button> `:''}${act}${sub?`<div class="sub">${sub}</div>`:''}</div>`};
+ const sub=me?[!p&&R.has(x.id)?`<button data-a="rsvp" data-id="${x.id}">Cancel RSVP</button>`:'',!p?`<a href="${gc(x.title,x.starts_at,+x.duration_min||60)}" target="_blank" rel="noopener">Add to calendar</a>`:'',!p?`<button data-a="share" data-id="${x.id}">Share</button>`:'',mg?`<button data-a="code" data-id="${x.id}">Check-in code</button>`:'',mg?`<button data-a="delsess" data-id="${x.id}">Delete</button>`:''].join(''):'';
+ return`<div class="card ${p?'off':''}"><span class="tag">${esc(x.subject)}</span><span class="tag">${fD(x.starts_at)}</span>${live(x)&&!p?'<span class="tag f">Live now</span>':''}<h3>${esc(x.title)}</h3><p class="mu">Led by ${esc(x.host_name)} · ${+x.duration_min||60} min</p><p>${esc(x.description)}</p>${ck?'<span class="tag o">Checked in ✓</span> ':''}${me&&!ck&&live(x)?`<button class="btn s" data-a="checkin" data-id="${x.id}">Check in</button> `:''}${act}${sub?`<div class="sub">${sub}</div>`:''}</div>`};
 const fld=([k,t],v)=>{const a=`data-k="${k}" data-t="${t||''}"`;if(t=='chk')return`<label class="ck"><input type="checkbox" ${v?'checked':''} ${a}> ${lab(k)}</label>`;
- if(t=='sel')return`<label>${lab(k)}<select ${a}><option value="">Auto (read from the schedule text)</option>${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].map((d,i)=>`<option value="${i}" ${String(v)===String(i)?'selected':''}>${d}</option>`).join('')}</select></label>`;
  if(t=='area')return`<label>${lab(k)}<textarea rows="3" ${a}>${esc(v)}</textarea></label>`;
  if(t=='dt'&&v){const d=new Date(v);if(!isNaN(d))v=new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,16)}
- return`<label>${lab(k)}<input type="${{date:'date',dt:'datetime-local',num:'number',time:'time'}[t]||'text'}" value="${esc(v)}" ${a}></label>`};
+ return`<label>${lab(k)}<input type="${{date:'date',dt:'datetime-local',num:'number'}[t]||'text'}" value="${esc(v)}" ${a}></label>`};
 const collect=el=>{const o={};el.querySelectorAll('[data-k]').forEach(i=>{let v=i.type=='checkbox'?i.checked:i.value,t=i.dataset.t;if(t=='dt')v=v?new Date(v).toISOString():null;else if(t=='num')v=+v||0;else if(t=='date'&&!v)v=null;o[i.dataset.k]=v});return o};
 const crud=tb=>`<h3 style="margin-top:1.5rem">${TN[tb]}</h3>`+T[tb].map(r=>`<fieldset data-f="${tb}" data-id="${r.id}">${FD[tb].map(f=>fld(f,r[f[0]])).join('')}<button class="btn s" data-a="save">Save</button> <button class="btn s g" data-a="del">Delete</button></fieldset>`).join('')+`<button class="btn s" data-a="add" data-t="${tb}">+ Add</button>`;
 const isOpenPoll=p=>p.active&&(!p.closes_at||new Date(p.closes_at)>now());
@@ -263,7 +247,7 @@ function edit(tb,id){const m=$('#md'),r=id?T[tb].find(x=>x.id==id)||{}:{},fs=FD[
 const P={};
 P.home=()=>{const m=S.meeting,st=S.site,up=T.sessions.filter(x=>!ended(x)).sort((a,b)=>a.starts_at.localeCompare(b.starts_at)).slice(0,3),op=T.polls.filter(isOpenPoll).slice(0,2),held=T.sessions.filter(ended).length;
  const step=(n,t,d)=>`<div class="card step"><div class="n">${n}</div><h3>${t}</h3><p class="mu" style="margin:0">${d}</p></div>`,don=st.donate_url?`<a class="btn d" href="${U(st.donate_url)}" target="_blank" rel="noopener">Donate</a>`:'';
- return`<header class="hero"><div class="wrap"><p class="eyebrow">Student-led · Elgin, Illinois</p><h1>Free STEM education, taught by students for students.</h1><p class="lead">${esc(st.about)}</p><div class="cta"><a class="btn" href="#/sessions">Browse sessions</a><a class="btn g" href="#/lessons">Explore lesson plans</a>${don}</div><div class="cd" role="timer"></div></div></header>
+ return`<header class="hero"><div class="wrap"><p class="eyebrow">Student-led · Elgin, Illinois</p><h1>Where Elgin's minds meet the future of STEM.</h1><p class="lead">${esc(st.about)}</p><div class="cta"><a class="btn" href="#/sessions">Browse sessions</a><a class="btn g" href="#/lessons">Explore lesson plans</a>${don}</div><div class="cd" role="timer"></div></div></header>
 ${held+T.lessons.length+T.events.length?`<div class="band"><div class="stats3"><div><b>${held}</b><span>sessions held</span></div><div><b>${T.lessons.length}</b><span>lesson plans</span></div><div><b>${T.events.length}</b><span>community events</span></div><div><b>Free</b><span>always</span></div></div></div>`:''}${nudge()}
 <section>${sh('Our mission','Learning that is free, hands-on and peer-led')}<div class="card mis">${esc(st.mission)}</div>${String(st.values).split(',').map(v=>`<span class="tag f">${esc(v.trim())}</span>`).join('')}</section>
 <section>${sh('How it works','Getting started takes three steps')}<div class="grid">${step(1,'Find a session','Browse upcoming sessions and RSVP. No experience needed.')}${step(2,'Show up and learn','Join a tutor-led session and build something real, together.')}${step(3,'Check in and grow','Check in with the host code to build your streak, then keep learning with our lesson plans.')}</div></section>
@@ -296,7 +280,7 @@ P.profile=()=>{if(!me)return P.login();const n=Date.now(),mine=T.sessions.filter
 P.admin=()=>!isO()?'<section><p>Officers only.</p></section>':`<section><h2>Officer Admin</h2><p class="mu">Everything here updates the live site for all visitors.</p>
  <div class="tabbar" role="tablist">${[['ov','Overview'],['mem','Members'],['site','Site'],['cont','Content']].map(([k,l])=>`<button class="btn s ${AT==k?'':'g'}" data-a="tab" data-k="${k}" role="tab" aria-selected="${AT==k}">${l}</button>`).join('')}</div><div class="tabs" data-t="${AT}"><div data-tab="ov" role="tabpanel">
  <div class="grid" style="margin:1rem 0">${[[T.mem.length,'members'],[T.mem.filter(m=>m.role!='member').length,'tutors & officers'],[T.sessions.filter(x=>!ended(x)).length,'upcoming sessions'],[T.rsvps.length,'total RSVPs'],[T.chk.length,'total check-ins'],[T.polls.filter(isOpenPoll).length,'open polls']].map(([n,l])=>`<div class="card"><div class="stat">${n}</div>${l}</div>`).join('')}</div>
- <div class="card"><b>Exports &amp; tools</b><p><button class="btn s" data-a="csvm">Download members (CSV)</button> <button class="btn s" data-a="csva">Download attendance (CSV)</button> <button class="btn s g" data-a="copye">Copy all member emails</button></p></div><h3>Attendance, last 8 sessions</h3>${(()=>{const c={};T.chk.forEach(r=>c[r.session_id]=(c[r.session_id]||0)+1);const ss=T.sessions.filter(ended).sort((a,b)=>b.starts_at.localeCompare(a.starts_at)).slice(0,8).reverse(),mx=Math.max(1,...ss.map(s=>c[s.id]||0));return ss.length?`<div class="card bars">${ss.map(s=>`<div class="bar"><span>${esc(s.title)}</span><i style="width:${Math.round((c[s.id]||0)/mx*100)}%"></i><b>${c[s.id]||0}</b></div>`).join('')}</div>`:'<p class="mu">No past sessions yet.</p>'})()}<h3>Messages (${T.msg.length})</h3>${T.msg.map(x=>`<div class="card"><b>${esc(x.name)}</b> · <a href="mailto:${esc(x.email)}">${esc(x.email)}</a> <span class="mu">${fD(x.created_at)}</span><p style="margin:.4rem 0">${esc(x.body)}</p><button class="btn s g" data-a="delmsg" data-id="${x.id}">Delete</button></div>`).join('')||'<p class="mu">No messages yet.</p>'}<h3>Recent site errors</h3>${T.err.map(x=>`<p class="mu">${fD(x.created_at)} · ${esc(x.page)} · ${esc(x.message)}</p>`).join('')||'<p class="mu">None.</p>'}<h3>Tutor requests</h3>${T.pend.map(p=>`<div class="card">${esc(p.name)} <button class="btn s" data-a="appr" data-id="${p.id}">Approve as tutor</button> <button class="btn s g" data-a="rej" data-id="${p.id}">Reject</button></div>`).join('')||'<p class="mu">None right now.</p>'}
+ <div class="card"><b>Exports &amp; tools</b><p><button class="btn s" data-a="csvm">Download members (CSV)</button> <button class="btn s" data-a="csva">Download attendance (CSV)</button> <button class="btn s g" data-a="copye">Copy all member emails</button></p></div><h3>Messages (${T.msg.length})</h3>${T.msg.map(x=>`<div class="card"><b>${esc(x.name)}</b> · <a href="mailto:${esc(x.email)}">${esc(x.email)}</a> <span class="mu">${fD(x.created_at)}</span><p style="margin:.4rem 0">${esc(x.body)}</p><button class="btn s g" data-a="delmsg" data-id="${x.id}">Delete</button></div>`).join('')||'<p class="mu">No messages yet.</p>'}<h3>Recent site errors</h3>${T.err.map(x=>`<p class="mu">${fD(x.created_at)} · ${esc(x.page)} · ${esc(x.message)}</p>`).join('')||'<p class="mu">None.</p>'}<h3>Tutor requests</h3>${T.pend.map(p=>`<div class="card">${esc(p.name)} <button class="btn s" data-a="appr" data-id="${p.id}">Approve as tutor</button> <button class="btn s g" data-a="rej" data-id="${p.id}">Reject</button></div>`).join('')||'<p class="mu">None right now.</p>'}
  </div><div data-tab="mem" role="tabpanel"><h3>Members (${T.mem.length})</h3><div class="fl"><input id="mq" placeholder="Search members by name or email" aria-label="Search members" value="${esc(F.mq)}"><select id="mr" aria-label="Filter by role"><option value="">All roles</option>${['member','tutor','officer','cofounder'].map(r=>`<option value="${r}" ${r==F.mr?'selected':''}>${RL[r]}</option>`).join('')}</select></div><div id="ml" style="margin-top:.6rem"></div>
  </div><div data-tab="site" role="tabpanel"><h3>Mission &amp; announcement</h3><fieldset data-f="settings" data-key="site">${FS.site.map(f=>fld(f,S.site[f[0]])).join('')}<button class="btn s" data-a="saveset">Save</button></fieldset>
  <h3>Meeting link</h3><fieldset data-f="settings" data-key="meeting">${FS.meeting.map(f=>fld(f,S.meeting[f[0]])).join('')}<button class="btn s" data-a="saveset">Save</button></fieldset>
@@ -307,16 +291,13 @@ const csv=(rows,name)=>{const b=new Blob([rows.map(r=>r.map(c=>{c=String(c??'');
 function memList(){const q=F.mq.toLowerCase();$('#ml').innerHTML=T.mem.filter(m=>(!F.mr||m.role==F.mr)&&(!q||((m.name||'')+' '+(m.email||'')).toLowerCase().includes(q))).map(mrow).join('')||'<p class="mu">No members found.</p>'}
 async function route(keep){const r=cur();
  if(r=='admin'&&isO()&&sb){T.pend=(await sb.from('profiles').select('*').eq('tutor_requested',true).eq('role','member')).data||[];const mr=await sb.rpc('list_members');if(mr.error)alert('Members could not load: '+mr.error.message);T.mem=mr.data||[];T.rsvps=(await sb.from('rsvps').select('session_id,profiles(name)')).data||[];T.chk=(await sb.from('checkins').select('session_id,profiles(name)')).data||[];T.err=(await sb.from('client_errors').select('*').order('created_at',{ascending:false}).limit(8)).data||[];T.msg=(await sb.from('messages').select('*').order('created_at',{ascending:false}).limit(20)).data||[]}
- $('#main').innerHTML=(P[r]||P.home)();document.title=(TT[r]?TT[r]+' · ':'')+'Elgin STEM Society';fix();document.querySelectorAll('nav a[data-r]').forEach(a=>{a.classList.toggle('on',a.dataset.r==r);a.dataset.r==r?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current')});if(r=='lessons')lessonList();if(r=='admin'&&isO())memList();tick();if(!keep){scrollTo(0,0);$('#main').focus({preventScroll:true})}}
+ $('#main').innerHTML=(P[r]||P.home)();document.title=(TT[r]?TT[r]+' · ':'')+'Elgin STEM Society';fix();document.querySelectorAll('nav a[data-r]').forEach(a=>a.classList.toggle('on',a.dataset.r==r));if(r=='lessons')lessonList();if(r=='admin'&&isO())memList();tick();if(!keep)scrollTo(0,0)}
 /* Countdown: uses "Next meeting" from Admin > Site; if unset or over, falls back to the next scheduled session. */
-const left=ms=>{const s=Math.floor(ms/1e3),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return d?`${d}d ${h}h`:h?`${h}h ${m}m`:`${m}m ${s%60}s`};
-function tick(){const n=now();document.querySelectorAll('.sc').forEach(e=>{const t=+e.dataset.ts-n;e.textContent=t<=0?'Happening now':'Starts in '+left(t)});
- const els=document.querySelectorAll('.cd');if(!els.length)return;const L=Core.targets(S.meeting,T.sessions,n),lv=L.find(x=>x.t<=n),g=L.find(x=>x.t>n);
- const t=g?g.t-n:0,vals=[Math.floor(t/864e5),Math.floor(t/36e5)%24,Math.floor(t/6e4)%60,Math.floor(t/1e3)%60].map(v=>String(v).padStart(2,'0')),key=(lv?lv.t+'L':'')+(g?g.t+'U':'none');
+function tick(){const els=document.querySelectorAll('.cd');if(!els.length)return;const n=now(),g=Core.nextTarget(S.meeting.next,T.sessions,n);
+ const t=g?g.t-n:0,vals=[Math.floor(t/864e5),Math.floor(t/36e5)%24,Math.floor(t/6e4)%60,Math.floor(t/1e3)%60].map(v=>String(v).padStart(2,'0')),key=g?g.t+(t<=0?'L':'U'):'';
  els.forEach(e=>{if(e.dataset.k!==key){e.dataset.k=key;const p=(v,u)=>`<div><b>${v}</b><span>${u}</span></div>`;
-  e.innerHTML=(lv?`<p style="margin:0 0 .6rem"><b>🔴 ${esc(lv.l)} is live now</b></p>`:'')+(!g?(lv?'':'<p style="margin:0;opacity:.85">The next meeting will be posted soon.</p>'):`<p style="margin:0">${esc(g.l)} starts in</p><div class="cdb">${p(vals[0],'days')}${p(vals[1],'hours')}${p(vals[2],'min')}${p(vals[3],'sec')}</div><a class="btn s g" href="${gc(g.l,g.t,60)}" target="_blank" rel="noopener">Google Calendar</a> <button class="btn s g" data-a="ics" data-ts="${g.t}" data-m="60" data-title="${esc(g.l)}">Apple / Outlook (.ics)</button>`)}
-  else if(g)e.querySelectorAll('.cdb b').forEach((b,i)=>b.textContent=vals[i])})}
-function dlics(title,t,mins){const f=x=>new Date(x).toISOString().replace(/[-:]|\.\d+/g,''),l=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Elgin STEM Society//EN','BEGIN:VEVENT','UID:'+t+'-'+Math.random().toString(36).slice(2)+'@elgin-stem-society','DTSTAMP:'+f(Date.now()),'DTSTART:'+f(t),'DTEND:'+f(t+mins*6e4),'SUMMARY:'+String(title).replace(/[,;\n]/g,' '),'END:VEVENT','END:VCALENDAR'],a=document.createElement('a');a.href=URL.createObjectURL(new Blob([l.join('\r\n')],{type:'text/calendar'}));a.download='elgin-stem-society.ics';a.click()}
+  e.innerHTML=!g?'':t<=0?`<p style="margin:0"><b>🔴 ${esc(g.l)} is live now</b></p>`:`<p style="margin:0">${esc(g.l)} starts in</p><div class="cdb">${p(vals[0],'days')}${p(vals[1],'hours')}${p(vals[2],'min')}${p(vals[3],'sec')}</div><a class="btn s g" href="${gc(g.l,g.t,60)}" target="_blank" rel="noopener">Add to calendar</a>`}
+  else e.querySelectorAll('.cdb b').forEach((b,i)=>b.textContent=vals[i])})}
 document.addEventListener('input',e=>{const t=e.target;if(t.id=='fs'){F.s=t.value;route()}else if(t.id=='lq'){F.q=t.value;lessonList()}else if(t.id=='ls'){F.ls=t.value;lessonList()}else if(t.id=='mq'){F.mq=t.value;memList()}else if(t.id=='mr'){F.mr=t.value;memList()}});
 document.addEventListener('change',async e=>{const t=e.target;if(t.dataset.a!='role')return;if(t.value=='officer'&&!await dlg('Make this person an officer? Officers can edit everything on the site.'))return memList();
  const r=await sb.from('profiles').update({role:t.value,tutor_requested:false}).eq('id',t.dataset.id);if(r.error){alert(r.error.message);return memList()}
@@ -328,10 +309,8 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
  const msg=()=>({n:$('#cn').value||'website visitor',m:$('#cm').value.trim()});
  if(a=='send'){const{n,m}=msg();if(!m)return alert('Please write a message first.');return void(location.href='mailto:'+S.contacts.map(c=>c.email).join(',')+'?subject='+encodeURIComponent('Message from '+n)+'&body='+encodeURIComponent(m))}
  if(a=='cpm'){const{n,m}=msg();if(!m)return alert('Please write a message first.');return void(navigator.clipboard?.writeText('From: '+n+'\n\n'+m).then(()=>alert('Message copied. Paste it into an email to our officers.'),()=>alert('Could not copy. Select the text and copy it manually.')))}
- if(a=='share'){const x=T.sessions.find(q=>q.id==id),tx=x.title+' · '+fD(x.starts_at)+' · Elgin STEM Society',u=location.origin+BASE+'#/sessions';return void(navigator.share?navigator.share({title:x.title,text:tx,url:u}).catch(()=>{}):navigator.clipboard?.writeText(tx+' '+u).then(()=>alert('Link copied.')))}
+ if(a=='share'){const x=T.sessions.find(q=>q.id==id),tx=x.title+' · '+fD(x.starts_at)+' · Elgin STEM Society',u=location.origin+BASE+'sessions';return void(navigator.share?navigator.share({title:x.title,text:tx,url:u}).catch(()=>{}):navigator.clipboard?.writeText(tx+' '+u).then(()=>alert('Link copied.')))}
  if(a=='shs'){const q=streak();return void(navigator.clipboard?.writeText("I'm on a "+q.c+'-week streak at Elgin STEM Society 🔥 '+location.origin+BASE).then(()=>alert('Copied! Paste it anywhere.')))}
- if(a=='annx'){try{localStorage.setItem('ann',S.site.announce)}catch(e){}$('#ann').innerHTML='';return}
- if(a=='ics')return void dlics(t.dataset.title,+t.dataset.ts,+t.dataset.m||60);
  if(a=='skip'){e.preventDefault();$('#main').focus();return}
  if(a=='sendmsg'){const n=$('#cn').value.trim(),em=$('#ce').value.trim(),m=$('#cm').value.trim(),er=$('#cerr'),bad=$('#hp').value?'bot':!n?'Please enter your name.':!/^\S+@\S+\.\S+$/.test(em)?'Please enter a valid email so we can reply.':m.length<10?'Please write a short message (at least 10 characters).':'';
   er.textContent=bad=='bot'?'':bad;if(bad)return;let last=0;try{last=+localStorage.getItem('lastmsg')||0}catch(x){}if(Date.now()-last<60000)return alert('Please wait a minute before sending another message.');
@@ -358,7 +337,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
   if(L.up&&r.data.user&&r.data.user.identities&&!r.data.user.identities.length){L.up=false;alert('An account with this email already exists. Please log in instead.');return route()}
   if(L.up&&!r.data.session)return alert('Check your email to confirm your account, then log in.');
   await load();await loadRest();shell();return go('profile')}
- if(a=='out'){await sb.auth.signOut();history.replaceState(null,'',BASE);return done()}
+ if(a=='out'){await sb.auth.signOut();history.pushState({},'',BASE);return done()}
  if(a=='rsvp')return ok(R.has(id)?await sb.from('rsvps').delete().match({session_id:id,user_id:me.id}):await sb.from('rsvps').insert({session_id:id}))&&done();
  if(a=='checkin'){const c=await dlg('Enter the check-in code your host is showing',{input:1,ok:'Check in'});if(!c)return;const r=await sb.rpc('check_in',{sid:id,code:c.trim()});if(!ok(r))return;if(r.data&&r.data.error)return alert(r.data.error);alert('Checked in! Your streak just grew.');return done()}
  if(a=='code')return showCode(id);
@@ -386,9 +365,11 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]')
 let lbFrom=null;const lbClose=()=>{const lb=$('#lb');lb.classList.remove('on');lbFrom?.focus()};
 document.addEventListener('click',e=>{const lb=$('#lb');if(e.target.closest('#lb'))return void lbClose();const im=e.target.closest('img[src="logo.png"]');if(im){e.preventDefault();lbFrom=im.closest('a')||document.activeElement;lb.querySelector('img').src=im.src;lb.classList.add('on');lb.focus()}});
 addEventListener('keydown',e=>{if(e.key=='Escape'&&$('#lb').classList.contains('on'))lbClose()});
-addEventListener('hashchange',()=>route());
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-r]');if(a&&!e.defaultPrevented&&e.button==0&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)){e.preventDefault();go(a.dataset.r)}});
+addEventListener('popstate',()=>route());
 try{const v=localStorage.getItem('th');if(v)document.documentElement.dataset.theme=v}catch(e){}
-$('#main').innerHTML='<section aria-busy="true"><div class="skl" style="width:40%;height:2rem"></div><div class="grid" style="margin-top:1.5rem"><div class="card skl" style="height:140px"></div><div class="card skl" style="height:140px"></div><div class="card skl" style="height:140px"></div></div></section>';
+(()=>{const q=new URLSearchParams(location.search).get('p');if(q)history.replaceState({},'',BASE+q.replace(/^\/+/,''));else if(location.hash.startsWith('#/'))history.replaceState({},'',BASE+location.hash.slice(2))})();
+$('#main').innerHTML='<section><p class="mu">Loading…</p></section>';
 (async()=>{await Promise.all([load(),syncTime()]);shell();route();setInterval(tick,1000);await loadRest();if(!document.activeElement?.matches?.('input,textarea,select'))route(1)})();
 </script>
 </body>
